@@ -1,6 +1,6 @@
 import React from 'react';
 import { RotateCcw } from 'lucide-react';
-import { AudioEngine } from '../../../audio/AudioEngine';
+import { HowlerEngine } from '../../../audio/howlerEngine';
 
 interface MobileExitSceneProps {
   onReplay: () => void;
@@ -8,7 +8,7 @@ interface MobileExitSceneProps {
 
 export const MobileExitScene: React.FC<MobileExitSceneProps> = ({ onReplay }) => {
   const handleReplay = () => {
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.triggerLightPulseSound();
     onReplay();
   };
 

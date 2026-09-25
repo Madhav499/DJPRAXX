@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Sparkles, ArrowRight } from 'lucide-react';
-import { AudioEngine } from '../../../audio/AudioEngine';
+import { HowlerEngine } from '../../../audio/howlerEngine';
 
 export interface BookingFormData {
   name: string;
@@ -50,7 +50,7 @@ export const MobileBookingScene: React.FC<MobileBookingSceneProps> = ({ onSucces
       return;
     }
     setIsSubmitting(true);
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.triggerLightPulseSound();
     setTimeout(() => {
       onSuccess(formData);
     }, 600);

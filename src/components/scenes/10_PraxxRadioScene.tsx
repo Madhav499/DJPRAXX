@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Play, Pause, SkipForward, SkipBack, Heart, Radio, ChevronRight } from 'lucide-react';
-import { AudioEngine, TRACKS } from '../../audio/AudioEngine';
+import { HowlerEngine, TRACKS } from '../../audio/howlerEngine';
 
 interface PraxxRadioSceneProps {
   onNext: () => void;
@@ -16,14 +16,14 @@ export const PraxxRadioScene: React.FC<PraxxRadioSceneProps> = ({ onNext }) => {
 
   useEffect(() => {
     const syncState = () => {
-      const st = AudioEngine.getState();
+      const st = HowlerEngine.getState();
       setIsPlaying(st.isPlaying);
       setCurrentTrackIndex(st.currentTrackIndex);
       setPlaybackTime(st.playbackTime);
     };
 
     syncState();
-    const unsub = AudioEngine.subscribe(syncState);
+    const unsub = HowlerEngine.subscribe(syncState);
     return () => {
       unsub();
     };
@@ -38,12 +38,12 @@ export const PraxxRadioScene: React.FC<PraxxRadioSceneProps> = ({ onNext }) => {
   };
 
   const handleTogglePlay = () => {
-    AudioEngine.togglePlay();
+    HowlerEngine.togglePlay();
   };
 
   const handleTrackSelect = (idx: number) => {
-    AudioEngine.setTrack(idx);
-    if (!isPlaying) AudioEngine.play();
+    HowlerEngine.setTrack(idx);
+    if (!isPlaying) HowlerEngine.play();
   };
 
   const toggleFavorite = (trackId: string) => {
@@ -153,7 +153,7 @@ export const PraxxRadioScene: React.FC<PraxxRadioSceneProps> = ({ onNext }) => {
             {/* Playback Transport Buttons */}
             <div className="flex items-center justify-center gap-5 mb-6">
               <button
-                onClick={() => AudioEngine.prevTrack()}
+                onClick={() => HowlerEngine.prevTrack()}
                 className="p-2 rounded-full hover:bg-white/10 text-zinc-400 hover:text-white transition-all active:scale-90"
                 aria-label="Previous Track"
               >
@@ -169,7 +169,7 @@ export const PraxxRadioScene: React.FC<PraxxRadioSceneProps> = ({ onNext }) => {
               </button>
 
               <button
-                onClick={() => AudioEngine.nextTrack()}
+                onClick={() => HowlerEngine.nextTrack()}
                 className="p-2 rounded-full hover:bg-white/10 text-zinc-400 hover:text-white transition-all active:scale-90"
                 aria-label="Next Track"
               >

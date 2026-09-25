@@ -1,6 +1,6 @@
 import React from 'react';
 import { BookOpen, ChevronRight } from 'lucide-react';
-import { AudioEngine } from '../../audio/AudioEngine';
+import { HowlerEngine } from '../../audio/howlerEngine';
 
 interface BiographyEntranceSceneProps {
   onNext: () => void;
@@ -16,7 +16,7 @@ export const BiographyEntranceScene: React.FC<BiographyEntranceSceneProps> = ({ 
   ];
 
   const handleStepInside = () => {
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.triggerLightPulseSound();
     onNext();
   };
 

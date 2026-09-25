@@ -1,53 +1,387 @@
-import React from 'react';
-import type { NavDestination, StoryboardScene } from '../../types/navigation';
-import { StageLightNavOverlay } from './StageLightNavOverlay';
-import { WebGLWorld } from '../venue/WebGLWorld';
+import React, { useCallback, useEffect } from "react";
+import {
+  NAV_ITEMS,
+  type NavDestination,
+  type NavItem,
+} from "../../types/navigation";
+import { HowlerEngine } from "../../audio/howlerEngine";
 
-interface StageLightNavProps {
+interface StageLightNavOverlayProps {
   activeNav: NavDestination;
-  activeScene: StoryboardScene;
   hoveredNav: NavDestination | null;
   focusedNav: NavDestination | null;
   onHoverNav: (dest: NavDestination | null) => void;
   onFocusNav: (dest: NavDestination | null) => void;
   onSelectNav: (dest: NavDestination) => void;
-  pulseTrigger: number;
-  isReducedMotion: boolean;
 }
 
-export const StageLightNav: React.FC<StageLightNavProps> = ({
+export const StageLightNav: React.FC<StageLightNavOverlayProps> = ({
   activeNav,
-  activeScene,
   hoveredNav,
   focusedNav,
   onHoverNav,
   onFocusNav,
   onSelectNav,
-  pulseTrigger,
-  isReducedMotion,
 }) => {
-  return (
-    <>
-      {/* 3D Suspended Rig & Volumetric Spotlights */}
-      <WebGLWorld
-        activeNav={activeNav}
-        activeScene={activeScene}
-        hoveredNav={hoveredNav}
-        focusedNav={focusedNav}
-        onSelectNav={onSelectNav}
-        pulseTrigger={pulseTrigger}
-        isReducedMotion={isReducedMotion}
-      />
+  // Handle Keyboard Arrow Left/Right and Number keys (1-6)
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      // Don't intercept if user is typing in an input or textarea
+      if (
+        document.activeElement?.tagName === "INPUT" ||
+        document.activeElement?.tagName === "TEXTAREA"
+      ) {
+        return;
+      }
 
-      {/* Semantic Accessibility & Visual Lighting Truss Overlay */}
-      <StageLightNavOverlay
-        activeNav={activeNav}
-        hoveredNav={hoveredNav}
-        focusedNav={focusedNav}
-        onHoverNav={onHoverNav}
-        onFocusNav={onFocusNav}
-        onSelectNav={onSelectNav}
-      />
-    </>
+      const currentIndex = NAV_ITEMS.findIndex((item) => item.id === activeNav);
+
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        const nextIndex = (currentIndex + 1) % NAV_ITEMS.length;
+        const nextItem = NAV_ITEMS[nextIndex];
+        HowlerEngine.triggerLightPulseSound();
+        onSelectNav(nextItem.id);
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        const prevIndex =
+          (currentIndex - 1 + NAV_ITEMS.length) % NAV_ITEMS.length;
+        const prevItem = NAV_ITEMS[prevIndex];
+        HowlerEngine.triggerLightPulseSound();
+        onSelectNav(prevItem.id);
+      } else if (["1", "2", "3", "4", "5", "6"].includes(e.key)) {
+        const index = parseInt(e.key, 10) - 1;
+        if (NAV_ITEMS[index]) {
+          HowlerEngine.triggerLightPulseSound();
+          onSelectNav(NAV_ITEMS[index].id);
+        }
+      }
+    },
+    [activeNav, onSelectNav],
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
+
+  const handleItemClick = (item: NavItem) => {
+    HowlerEngine.triggerLightPulseSound();
+    onSelectNav(item.id);
+  };
+
+  return (
+    <header
+      className="fixed top-0 left-0 right-0 z-40 pointer-events-none select-none"
+      role="banner"
+    >
+      {/* Top Truss Architectural Header Band */}
+      <div className="w-full mx-auto px-4 md:px-8 pt-3 pb-2 flex items-start justify-between">
+        {/* Left Rig Branding - Exactly as Concept 05 */}
+        <div className="pointer-events-auto flex flex-col items-start">
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] tracking-[0.25em] text-amber-500 font-semibold uppercase">
+              DJ
+            </span>
+            <span className="text-sm md:text-base tracking-[0.3em] font-extrabold text-white font-['Syne']">
+              PRAXX
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5 mt-0.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping opacity-75" />
+            <span className="text-[9px] md:text-[10px] tracking-[0.25em] text-zinc-400 font-['Space_Grotesk'] uppercase">
+              LIGHTS • MUSIC • PEOPLE
+            </span>
+          </div>
+        </div>
+
+        {/* Center: Stage Light Rig & Destination Labels */}
+        <nav
+          className="pointer-events-auto flex flex-col items-center"
+          aria-label="Stage Light Rig Navigation"
+        >
+          {/* 6 Stage Light Navigation Elements */}
+          <div
+            className="flex items-center justify-center gap-2 sm:gap-4 md:gap-8 lg:gap-11 px-3 py-1.5 rounded-2xl backdrop-blur-md border border-white/5 bg-black/40 shadow-2xl"
+            role="tablist"
+            aria-orientation="horizontal"
+          >
+            {NAV_ITEMS.map((item, index) => {
+              const isActive = activeNav === item.id;
+              const isHovered = hoveredNav === item.id;
+              const isFocused = focusedNav === item.id;
+
+              return (
+                <button
+                  key={item.id}
+                  id={`nav-light-${item.id}`}
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls={`panel-${item.id}`}
+                  tabIndex={0}
+                  onClick={() => handleItemClick(item)}
+                  onMouseEnter={() => onHoverNav(item.id)}
+                  onMouseLeave={() => onHoverNav(null)}
+                  onFocus={() => onFocusNav(item.id)}
+                  onBlur={() => onFocusNav(null)}
+                  className={`group relative flex flex-col items-center py-2 px-2.5 md:px-3.5 rounded-xl transition-all duration-300  ${
+                    isActive
+                      ? "scale-105"
+                      : "hover:scale-105 opacity-80 hover:opacity-100"
+                  }`}
+                  aria-label={`Navigate to ${item.label}: ${item.description}`}
+                >
+                  {/* Visual Stage Light Fixture Representation (Complementing 3D WebGL / Fallback) */}
+                  {/* Physical Stage Spotlight */}
+                  <div className="relative flex flex-col items-center mb-1">
+                    <svg
+                      viewBox="0 0 64 64"
+                      className={`w-9 h-9 relative z-10 transition-all duration-300 ${
+                        isActive
+                          ? "scale-105"
+                          : isHovered || isFocused
+                            ? "scale-[1.03]"
+                            : ""
+                      }`}
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <defs>
+                        {/* Unique IDs because this SVG is rendered multiple times */}
+                        <radialGradient id={`lens-${item.id}`}>
+                          <stop
+                            offset="0%"
+                            stopColor={isActive ? "#fffbea" : "#71717a"}
+                          />
+                          <stop
+                            offset="35%"
+                            stopColor={isActive ? "#ffe9a3" : "#52525b"}
+                          />
+                          <stop
+                            offset="70%"
+                            stopColor={isActive ? "#ffb52e" : "#3f3f46"}
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor={isActive ? "#f07c22" : "#27272a"}
+                          />
+                        </radialGradient>
+
+                        {/* Strong active lens glow */}
+                        <filter
+                          id={`glow-${item.id}`}
+                          x="-100%"
+                          y="-100%"
+                          width="300%"
+                          height="300%"
+                        >
+                          <feGaussianBlur
+                            stdDeviation={isActive ? "3.5" : "1"}
+                            result="blur"
+                          />
+
+                          <feMerge>
+                            {isActive && <feMergeNode in="blur" />}
+                            <feMergeNode in="SourceGraphic" />
+                          </feMerge>
+                        </filter>
+                      </defs>
+
+                      {/* Yoke / mounting bracket */}
+                      <path
+                        d="M20 20V13C20 10.8 21.8 9 24 9H40C42.2 9 44 10.8 44 13V20"
+                        stroke={
+                          isActive
+                            ? "#f59e0b"
+                            : isHovered || isFocused
+                              ? "#a16207"
+                              : "#52525b"
+                        }
+                        strokeWidth="2"
+                        className="transition-all duration-300"
+                      />
+
+                      {/* Side mounting supports */}
+                      <path
+                        d="M19 22L15 31M45 22L49 31"
+                        stroke={
+                          isActive
+                            ? "#b7790a"
+                            : isHovered || isFocused
+                              ? "#854d0e"
+                              : "#3f3f46"
+                        }
+                        strokeWidth="2"
+                        className="transition-all duration-300"
+                      />
+
+                      {/* Main metal fixture housing */}
+                      <path
+                        d="
+                          M19 21
+                          H45
+                          L49 39
+                          C49.5 42 47 44 44 44
+                          H20
+                          C17 44 14.5 42 15 39
+                          Z
+                        "
+                        fill={isActive ? "#211b12" : "#18181b"}
+                        stroke={
+                          isActive
+                            ? "#a16207"
+                            : isHovered || isFocused
+                              ? "#52525b"
+                              : "#3f3f46"
+                        }
+                        strokeWidth="1.5"
+                        className="transition-all duration-300"
+                      />
+
+                      {/* Housing top detail */}
+                      <path
+                        d="M22 24H42"
+                        stroke={isActive ? "#785514" : "#3f3f46"}
+                        strokeWidth="1"
+                      />
+
+                      {/* Outer lens housing */}
+                      <ellipse
+                        cx="32"
+                        cy="35"
+                        rx="12"
+                        ry="7"
+                        fill="#09090b"
+                        stroke={
+                          isActive
+                            ? "#d97706"
+                            : isHovered || isFocused
+                              ? "#71717a"
+                              : "#3f3f46"
+                        }
+                        strokeWidth="1.5"
+                        className="transition-all duration-300"
+                      />
+
+                      {/* Actual optical lens */}
+                      <ellipse
+                        cx="32"
+                        cy="35"
+                        rx="8"
+                        ry="4"
+                        fill={`url(#lens-${item.id})`}
+                        filter={isActive ? `url(#glow-${item.id})` : undefined}
+                        className="transition-all duration-300"
+                      />
+
+                      {/* Bright center visible ONLY when powered */}
+                      {isActive && (
+                        <ellipse
+                          cx="32"
+                          cy="35"
+                          rx="4.5"
+                          ry="2"
+                          fill="#fff8dc"
+                          opacity="0.95"
+                        />
+                      )}
+                    </svg>
+
+                    {/* Light cone — ONLY active spotlight emits it */}
+                    <div
+                      className={`absolute top-[27px] pointer-events-none
+      transition-all duration-500
+      ${isActive ? "opacity-100 scale-100" : "opacity-0 scale-75"}
+    `}
+                      style={{
+                        width: "54px",
+                        height: "55px",
+
+                        background: `
+        linear-gradient(
+          to bottom,
+          rgba(255, 238, 184, 0.30) 0%,
+          rgba(245, 158, 11, 0.16) 35%,
+          rgba(240, 124, 34, 0.06) 70%,
+          transparent 100%
+        )
+      `,
+
+                        clipPath: "polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%)",
+
+                        filter: "blur(3px)",
+                        transformOrigin: "top center",
+                      }}
+                    />
+
+                    {/* Hot center of beam */}
+                    <div
+                      className={`absolute top-[28px] pointer-events-none
+      transition-opacity duration-300
+      ${isActive ? "opacity-100" : "opacity-0"}
+    `}
+                      style={{
+                        width: "26px",
+                        height: "42px",
+
+                        background: `
+                          linear-gradient(
+                            to bottom,
+                            rgba(255,255,235,0.30),
+                            rgba(255,190,60,0.08),
+                            transparent
+                          )
+                        `,
+
+                        clipPath: "polygon(43% 0%, 57% 0%, 100% 100%, 0% 100%)",
+
+                        filter: "blur(2px)",
+                      }}
+                    />
+                  </div>
+
+                  {/* Navigation Destination Label */}
+                  <span
+                    className={`text-xs md:text-sm tracking-[0.2em] font-semibold transition-all duration-300 font-['Space_Grotesk'] ${
+                      isActive
+                        ? "text-amber-400 drop-shadow-[0_0_8px_rgba(240,124,34,0.8)] font-bold"
+                        : isHovered || isFocused
+                          ? "text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.6)]"
+                          : "text-zinc-400"
+                    }`}
+                  >
+                    {item.label}
+                  </span>
+
+                  {/* Keyboard Shortcut badge (Desktop) */}
+                  <span className="hidden lg:block text-[8px] tracking-wider text-zinc-600 group-hover:text-zinc-400 mt-0.5 font-mono">
+                    [{index + 1}]
+                  </span>
+
+                  {/* Floor Spotlight Pool under active label */}
+                  {isActive && (
+                    <div
+                      className="absolute -bottom-1 w-10 h-1.5 rounded-full bg-amber-500/80 shadow-[0_0_12px_#f07c22]"
+                      style={{ filter: "blur(1px)" }}
+                    />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </nav>
+
+        {/* Right Rig Slogan - Exactly as Concept 05 */}
+        <div className="pointer-events-auto flex flex-col items-end text-right">
+          <span className="text-[10px] md:text-xs tracking-[0.25em] text-zinc-300 font-medium font-['Space_Grotesk'] uppercase">
+            A HIGHER STATE
+          </span>
+          <span className="text-[10px] md:text-xs tracking-[0.25em] text-amber-500 font-bold font-['Space_Grotesk'] uppercase">
+            TOGETHER
+          </span>
+          <div className="w-6 h-px bg-amber-500/60 mt-1" />
+        </div>
+      </div>
+    </header>
   );
 };

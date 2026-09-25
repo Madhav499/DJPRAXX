@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight, Disc, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
-import { AudioEngine } from '../../../audio/AudioEngine';
+import { HowlerEngine } from '../../../audio/howlerEngine';
 
 interface MobileBiographyChapterSceneProps {
   onNext: () => void;
@@ -40,7 +40,7 @@ export const MobileBiographyChapterScene: React.FC<MobileBiographyChapterScenePr
 
   const handleVinylTap = () => {
     setShowSecretArchive(!showSecretArchive);
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.triggerLightPulseSound();
   };
 
   return (
@@ -129,7 +129,7 @@ export const MobileBiographyChapterScene: React.FC<MobileBiographyChapterScenePr
         <div className="flex items-center justify-between pt-2 border-t border-white/10">
           <button
             onClick={() => {
-              AudioEngine.triggerLightPulseSound();
+              HowlerEngine.triggerLightPulseSound();
               setChapterIndex((prev) => Math.max(0, prev - 1));
             }}
             disabled={chapterIndex === 0}
@@ -145,7 +145,7 @@ export const MobileBiographyChapterScene: React.FC<MobileBiographyChapterScenePr
 
           <button
             onClick={() => {
-              AudioEngine.triggerLightPulseSound();
+              HowlerEngine.triggerLightPulseSound();
               setChapterIndex((prev) => Math.min(chapters.length - 1, prev + 1));
             }}
             disabled={chapterIndex === chapters.length - 1}
@@ -161,7 +161,7 @@ export const MobileBiographyChapterScene: React.FC<MobileBiographyChapterScenePr
       <div className="relative z-10 w-full max-w-xs mx-auto pt-2">
         <button
           onClick={() => {
-            AudioEngine.triggerLightPulseSound();
+            HowlerEngine.triggerLightPulseSound();
             onNext();
           }}
           className="w-full py-3 rounded-full bg-zinc-900/90 border border-amber-500/50 text-white font-bold text-xs tracking-[0.2em] uppercase font-['Space_Grotesk'] hover:border-amber-400 active:scale-95 transition-all flex items-center justify-center gap-2"

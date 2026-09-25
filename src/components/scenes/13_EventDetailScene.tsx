@@ -1,7 +1,7 @@
 import React from 'react';
 import { Calendar, MapPin, Sparkles, Volume2, ChevronRight, Award } from 'lucide-react';
 import { type EventItem, EVENTS_DATA } from './12_EventArchiveScene';
-import { AudioEngine } from '../../audio/AudioEngine';
+import { HowlerEngine } from '../../audio/howlerEngine';
 
 interface EventDetailSceneProps {
   event?: EventItem;
@@ -13,9 +13,9 @@ export const EventDetailScene: React.FC<EventDetailSceneProps> = ({
   onNext,
 }) => {
   const handlePlayRecapAudio = () => {
-    AudioEngine.triggerLightPulseSound();
-    AudioEngine.setTrack(0);
-    AudioEngine.play();
+    HowlerEngine.triggerLightPulseSound();
+    HowlerEngine.setTrack(0);
+    HowlerEngine.play();
   };
 
   return (

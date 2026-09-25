@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Flame, Zap, Wind, Radio, ChevronRight } from 'lucide-react';
-import { AudioEngine } from '../../audio/AudioEngine';
+import { HowlerEngine } from '../../audio/howlerEngine';
 
 interface InteractiveStageSceneProps {
   onNext: () => void;
@@ -16,7 +16,7 @@ export const InteractiveStageScene: React.FC<InteractiveStageSceneProps> = ({
 
   const handleTriggerStrobe = () => {
     setActiveFX('strobe');
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.triggerLightPulseSound();
     onTriggerFX();
     setEnergy((prev) => Math.min(100, prev + 3));
     setTimeout(() => setActiveFX(null), 600);
@@ -24,7 +24,7 @@ export const InteractiveStageScene: React.FC<InteractiveStageSceneProps> = ({
 
   const handleTriggerPyro = () => {
     setActiveFX('pyro');
-    AudioEngine.triggerPyroDropSound();
+    HowlerEngine.triggerPyroDropSound();
     onTriggerFX();
     setEnergy((prev) => Math.min(100, prev + 5));
     setTimeout(() => setActiveFX(null), 1000);
@@ -32,7 +32,7 @@ export const InteractiveStageScene: React.FC<InteractiveStageSceneProps> = ({
 
   const handleTriggerCO2 = () => {
     setActiveFX('co2');
-    AudioEngine.triggerPyroDropSound();
+    HowlerEngine.triggerPyroDropSound();
     onTriggerFX();
     setEnergy((prev) => Math.min(100, prev + 4));
     setTimeout(() => setActiveFX(null), 800);
@@ -40,7 +40,7 @@ export const InteractiveStageScene: React.FC<InteractiveStageSceneProps> = ({
 
   const handleTriggerLaser = () => {
     setActiveFX('laser');
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.triggerLightPulseSound();
     onTriggerFX();
     setEnergy((prev) => Math.min(100, prev + 2));
     setTimeout(() => setActiveFX(null), 700);

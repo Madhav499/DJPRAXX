@@ -1,6 +1,6 @@
 import React from 'react';
 import { RotateCcw, Disc } from 'lucide-react';
-import { AudioEngine } from '../../audio/AudioEngine';
+import { HowlerEngine } from '../../audio/howlerEngine';
 
 interface FinalScreenSceneProps {
   onReplay: () => void;
@@ -8,7 +8,7 @@ interface FinalScreenSceneProps {
 
 export const FinalScreenScene: React.FC<FinalScreenSceneProps> = ({ onReplay }) => {
   const handleReplayClick = () => {
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.triggerLightPulseSound();
     onReplay();
   };
 

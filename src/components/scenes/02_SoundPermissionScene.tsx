@@ -1,6 +1,6 @@
 import React from 'react';
 import { Volume2 } from 'lucide-react';
-import { AudioEngine } from '../../audio/AudioEngine';
+import { HowlerEngine } from '../../audio/howlerEngine';
 
 interface SoundPermissionSceneProps {
   onEnter: (soundEnabled: boolean) => void;
@@ -8,7 +8,7 @@ interface SoundPermissionSceneProps {
 
 export const SoundPermissionScene: React.FC<SoundPermissionSceneProps> = ({ onEnter }) => {
   const handleSoundOn = async () => {
-    await AudioEngine.startAudio();
+    await HowlerEngine.startAudio();
     onEnter(true);
   };
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
-import { AudioEngine } from '../../../audio/AudioEngine';
+import { HowlerEngine } from '../../../audio/howlerEngine';
 
 interface MobileSoundUniverseSceneProps {
   onNext: () => void;
@@ -39,8 +39,8 @@ export const MobileSoundUniverseScene: React.FC<MobileSoundUniverseSceneProps> =
 
   const handleSelectGenre = (genre: GenreNode) => {
     setSelectedGenre(genre.name);
-    AudioEngine.setDJFilter(genre.filterCutoff);
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.setDJFilter(genre.filterCutoff);
+    HowlerEngine.triggerLightPulseSound();
   };
 
   return (
@@ -146,7 +146,7 @@ export const MobileSoundUniverseScene: React.FC<MobileSoundUniverseSceneProps> =
       <div className="relative z-10 w-full max-w-xs pt-2">
         <button
           onClick={() => {
-            AudioEngine.triggerLightPulseSound();
+            HowlerEngine.triggerLightPulseSound();
             onNext();
           }}
           className="w-full py-3 rounded-full bg-zinc-900/90 border border-amber-500/50 text-white font-bold text-xs tracking-[0.2em] uppercase font-['Space_Grotesk'] hover:border-amber-400 active:scale-95 transition-all flex items-center justify-center gap-2"

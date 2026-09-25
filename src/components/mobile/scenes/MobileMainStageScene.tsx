@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, Zap } from 'lucide-react';
-import { AudioEngine } from '../../../audio/AudioEngine';
+import { HowlerEngine } from '../../../audio/howlerEngine';
 
 interface MobileMainStageSceneProps {
   onNext: () => void;
@@ -12,7 +12,7 @@ export const MobileMainStageScene: React.FC<MobileMainStageSceneProps> = ({ onNe
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const analysis = AudioEngine.getAudioAnalysis();
+      const analysis = HowlerEngine.getAudioAnalysis();
       setEnergy(analysis.overall);
       if (analysis.beatTrigger && Math.random() > 0.6) {
         setStrobeActive(true);
@@ -25,7 +25,7 @@ export const MobileMainStageScene: React.FC<MobileMainStageSceneProps> = ({ onNe
 
   const handleTriggerPyroFX = () => {
     setStrobeActive(true);
-    AudioEngine.triggerPyroDropSound();
+    HowlerEngine.triggerPyroDropSound();
     setTimeout(() => setStrobeActive(false), 300);
   };
 
@@ -88,7 +88,7 @@ export const MobileMainStageScene: React.FC<MobileMainStageSceneProps> = ({ onNe
         <button
           onClick={(e) => {
             e.stopPropagation();
-            AudioEngine.triggerLightPulseSound();
+            HowlerEngine.triggerLightPulseSound();
             onNext();
           }}
           className="w-full py-3.5 rounded-full bg-zinc-950/90 border border-amber-500/60 text-white font-bold text-xs tracking-[0.25em] uppercase font-['Space_Grotesk'] shadow-[0_0_25px_rgba(240,124,34,0.3)] hover:border-amber-400 active:scale-95 transition-all flex items-center justify-center gap-2 group backdrop-blur-md"

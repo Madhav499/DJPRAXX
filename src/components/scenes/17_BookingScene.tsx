@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Calendar, Send } from 'lucide-react';
-import { AudioEngine } from '../../audio/AudioEngine';
+import { HowlerEngine } from '../../audio/howlerEngine';
 
 interface BookingSceneProps {
   onSuccess: (bookingData: { name: string; eventType: string; date: string; venue: string }) => void;
@@ -29,7 +29,7 @@ export const BookingScene: React.FC<BookingSceneProps> = ({ onSuccess }) => {
 
     setErrorMsg('');
     setIsSubmitting(true);
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.triggerLightPulseSound();
 
     setTimeout(() => {
       setIsSubmitting(false);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight, BookOpen } from 'lucide-react';
-import { AudioEngine } from '../../../audio/AudioEngine';
+import { HowlerEngine } from '../../../audio/howlerEngine';
 
 interface MobileBiographyEntranceSceneProps {
   onNext: () => void;
@@ -14,7 +14,7 @@ export const MobileBiographyEntranceScene: React.FC<MobileBiographyEntranceScene
   const handleOpenDoor = () => {
     if (isDoorOpen) return;
     setIsDoorOpen(true);
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.triggerLightPulseSound();
     setTimeout(onNext, 450);
   };
 

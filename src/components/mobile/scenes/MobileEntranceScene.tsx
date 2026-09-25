@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
-import { AudioEngine } from '../../../audio/AudioEngine';
+import { HowlerEngine } from '../../../audio/howlerEngine';
 
 interface MobileEntranceSceneProps {
   onNext: () => void;
@@ -22,7 +22,7 @@ export const MobileEntranceScene: React.FC<MobileEntranceSceneProps> = ({ onNext
   const handleEnter = () => {
     if (isEntering) return;
     setIsEntering(true);
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.triggerLightPulseSound();
     setTimeout(onNext, 400);
   };
 

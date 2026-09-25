@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Calendar, MapPin, ChevronRight, Flame } from 'lucide-react';
 import { EVENTS_DATA, type EventItem } from '../../scenes/12_EventArchiveScene';
-import { AudioEngine } from '../../../audio/AudioEngine';
+import { HowlerEngine } from '../../../audio/howlerEngine';
 
 interface MobileEventArchiveSceneProps {
   onSelectEvent: (event: EventItem) => void;
@@ -20,7 +20,7 @@ export const MobileEventArchiveScene: React.FC<MobileEventArchiveSceneProps> = (
       : EVENTS_DATA.filter((e) => e.category === filter);
 
   const handleCardClick = (event: EventItem) => {
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.triggerLightPulseSound();
     onSelectEvent(event);
   };
 
@@ -44,7 +44,7 @@ export const MobileEventArchiveScene: React.FC<MobileEventArchiveSceneProps> = (
             <button
               key={cat}
               onClick={() => {
-                AudioEngine.triggerLightPulseSound();
+                HowlerEngine.triggerLightPulseSound();
                 setFilter(cat);
               }}
               className={`px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider transition-all ${
@@ -118,7 +118,7 @@ export const MobileEventArchiveScene: React.FC<MobileEventArchiveSceneProps> = (
       <div className="relative z-10 w-full max-w-xs mx-auto pt-2">
         <button
           onClick={() => {
-            AudioEngine.triggerLightPulseSound();
+            HowlerEngine.triggerLightPulseSound();
             onNext();
           }}
           className="w-full py-3 rounded-full bg-zinc-900/90 border border-amber-500/50 text-white font-bold text-xs tracking-[0.2em] uppercase font-['Space_Grotesk'] hover:border-amber-400 active:scale-95 transition-all flex items-center justify-center gap-2"

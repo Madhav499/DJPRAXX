@@ -4,7 +4,7 @@ import {
   type NavDestination,
   type NavItem,
 } from '../../../types/navigation';
-import { AudioEngine } from '../../../audio/AudioEngine';
+import { HowlerEngine } from '../../../audio/howlerEngine';
 
 interface PocketRigProps {
   activeNav: NavDestination;
@@ -63,7 +63,7 @@ export const PocketRig: React.FC<PocketRigProps> = ({
     const targetItem = NAV_ITEMS[index];
     if (targetItem && targetItem.id !== draggedNav) {
       setDraggedNav(targetItem.id);
-      AudioEngine.triggerLightPulseSound();
+      HowlerEngine.triggerLightPulseSound();
 
       // Dynamic beam tilt based on finger offset relative to fixture center
       const fixtureCenterX = (index + 0.5) * itemWidth;
@@ -80,13 +80,13 @@ export const PocketRig: React.FC<PocketRigProps> = ({
   const handleTouchEnd = () => {
     if (draggedNav) {
       onSelectNav(draggedNav);
-      AudioEngine.triggerLightPulseSound();
+      HowlerEngine.triggerLightPulseSound();
       setDraggedNav(null);
     }
   };
 
   const handleLightClick = (item: NavItem) => {
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.triggerLightPulseSound();
     onSelectNav(item.id);
     resetAutoHide();
   };
@@ -102,7 +102,7 @@ export const PocketRig: React.FC<PocketRigProps> = ({
       {!isOpen && (
         <button
           onClick={() => {
-            AudioEngine.triggerLightPulseSound();
+            HowlerEngine.triggerLightPulseSound();
             setIsOpen(true);
           }}
           className="pointer-events-auto absolute bottom-2 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 py-2 px-5 rounded-full bg-zinc-950/80 border border-amber-500/30 backdrop-blur-md shadow-[0_0_20px_rgba(240,124,34,0.25)] active:scale-95 transition-all group focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"

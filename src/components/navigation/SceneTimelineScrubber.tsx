@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { type StoryboardScene, SCENES_DATA } from '../../types/navigation';
-import { ChevronLeft, ChevronRight, Layers, Play, Pause } from 'lucide-react';
-import { AudioEngine } from '../../audio/AudioEngine';
+import React, { useState } from "react";
+import { type StoryboardScene, SCENES_DATA } from "../../types/navigation";
+import { ChevronLeft, ChevronRight, Layers, Play, Pause } from "lucide-react";
+import { HowlerEngine } from "../../audio/howlerEngine";
 
 interface SceneTimelineScrubberProps {
   currentScene: StoryboardScene;
@@ -20,14 +20,14 @@ export const SceneTimelineScrubber: React.FC<SceneTimelineScrubberProps> = ({
 
   const handlePrev = () => {
     if (currentIndex > 0) {
-      AudioEngine.triggerLightPulseSound();
+      HowlerEngine.triggerLightPulseSound();
       onSelectScene(SCENES_DATA[currentIndex - 1].id);
     }
   };
 
   const handleNext = () => {
     if (currentIndex < SCENES_DATA.length - 1) {
-      AudioEngine.triggerLightPulseSound();
+      HowlerEngine.triggerLightPulseSound();
       onSelectScene(SCENES_DATA[currentIndex + 1].id);
     }
   };
@@ -56,24 +56,28 @@ export const SceneTimelineScrubber: React.FC<SceneTimelineScrubberProps> = ({
             <span className="text-[10px] tracking-[0.2em] font-mono text-amber-400 uppercase font-bold">
               20-SCENE STORYBOARD JUMP
             </span>
-            <span className="text-[9px] text-zinc-500 font-mono">IMAGE 1 SPEC</span>
+            <span className="text-[9px] text-zinc-500 font-mono">
+              IMAGE 1 SPEC
+            </span>
           </div>
           <div className="grid grid-cols-2 gap-1.5">
             {SCENES_DATA.map((sc) => (
               <button
                 key={sc.id}
                 onClick={() => {
-                  AudioEngine.triggerLightPulseSound();
+                  HowlerEngine.triggerLightPulseSound();
                   onSelectScene(sc.id);
                   setIsExpanded(false);
                 }}
                 className={`p-2 rounded-lg text-left transition-all text-[11px] font-['Space_Grotesk'] flex items-center gap-2 ${
                   sc.id === currentScene
-                    ? 'bg-amber-500 text-black font-bold shadow-md'
-                    : 'bg-zinc-900/60 hover:bg-zinc-800 text-zinc-300'
+                    ? "bg-amber-500 text-black font-bold shadow-md"
+                    : "bg-zinc-900/60 hover:bg-zinc-800 text-zinc-300"
                 }`}
               >
-                <span className="font-mono text-[9px] opacity-75">{sc.number}</span>
+                <span className="font-mono text-[9px] opacity-75">
+                  {sc.number}
+                </span>
                 <span className="truncate">{sc.title}</span>
               </button>
             ))}
@@ -88,8 +92,8 @@ export const SceneTimelineScrubber: React.FC<SceneTimelineScrubberProps> = ({
           onClick={() => setIsExpanded(!isExpanded)}
           className={`p-1.5 rounded-xl border transition-all ${
             isExpanded
-              ? 'bg-amber-500 text-black border-amber-400'
-              : 'hover:bg-white/10 text-zinc-400 hover:text-white border-white/5'
+              ? "bg-amber-500 text-black border-amber-400"
+              : "hover:bg-white/10 text-zinc-400 hover:text-white border-white/5"
           }`}
           title="Toggle Storyboard Scenes"
           aria-label="Toggle Storyboard Scenes"
@@ -123,13 +127,17 @@ export const SceneTimelineScrubber: React.FC<SceneTimelineScrubberProps> = ({
             onClick={() => setIsAutoTour(!isAutoTour)}
             className={`p-1.5 rounded-lg border transition-all ${
               isAutoTour
-                ? 'bg-amber-500/20 text-amber-300 border-amber-400/40 animate-pulse'
-                : 'hover:bg-white/10 text-zinc-400 hover:text-white border-transparent'
+                ? "bg-amber-500/20 text-amber-300 border-amber-400/40 animate-pulse"
+                : "hover:bg-white/10 text-zinc-400 hover:text-white border-transparent"
             }`}
-            aria-label={isAutoTour ? 'Pause Story Tour' : 'Play Story Tour'}
-            title={isAutoTour ? 'Pause Tour' : 'Auto Tour'}
+            aria-label={isAutoTour ? "Pause Story Tour" : "Play Story Tour"}
+            title={isAutoTour ? "Pause Tour" : "Auto Tour"}
           >
-            {isAutoTour ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+            {isAutoTour ? (
+              <Pause className="w-3.5 h-3.5" />
+            ) : (
+              <Play className="w-3.5 h-3.5" />
+            )}
           </button>
 
           <button

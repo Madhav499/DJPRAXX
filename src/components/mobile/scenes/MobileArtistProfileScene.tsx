@@ -1,6 +1,6 @@
 import React from 'react';
 import { MapPin, Calendar, Award, ArrowRight } from 'lucide-react';
-import { AudioEngine } from '../../../audio/AudioEngine';
+import { HowlerEngine } from '../../../audio/howlerEngine';
 
 interface MobileArtistProfileSceneProps {
   onNext: () => void;
@@ -82,7 +82,7 @@ export const MobileArtistProfileScene: React.FC<MobileArtistProfileSceneProps> =
       <div className="relative z-10 w-full max-w-xs mx-auto pt-2">
         <button
           onClick={() => {
-            AudioEngine.triggerLightPulseSound();
+            HowlerEngine.triggerLightPulseSound();
             onNext();
           }}
           className="w-full py-3.5 rounded-full bg-gradient-to-r from-amber-600 to-amber-500 text-black font-extrabold text-xs tracking-[0.25em] uppercase font-['Space_Grotesk'] shadow-[0_0_30px_rgba(240,124,34,0.6)] active:scale-95 transition-all flex items-center justify-center gap-2 group"

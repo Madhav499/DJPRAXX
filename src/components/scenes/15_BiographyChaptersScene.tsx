@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BookOpen, Disc, ChevronRight } from 'lucide-react';
-import { AudioEngine } from '../../audio/AudioEngine';
+import { HowlerEngine } from '../../audio/howlerEngine';
 
 interface ChapterContent {
   id: string;
@@ -80,7 +80,7 @@ export const BiographyChaptersScene: React.FC<BiographyChaptersSceneProps> = ({ 
 
   const handleSelectChapter = (idx: number) => {
     setActiveChapterIndex(idx);
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.triggerLightPulseSound();
   };
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Compass, Sparkles, ChevronRight } from 'lucide-react';
-import { AudioEngine } from '../../audio/AudioEngine';
+import { HowlerEngine } from '../../audio/howlerEngine';
 
 interface GenreNode {
   id: string;
@@ -87,7 +87,7 @@ export const SoundUniverseScene: React.FC<SoundUniverseSceneProps> = ({ onNext }
 
   const handleSelectGenre = (genre: GenreNode) => {
     setSelectedGenre(genre);
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.triggerLightPulseSound();
   };
 
   return (

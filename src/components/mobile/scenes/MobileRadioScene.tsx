@@ -7,24 +7,24 @@ import {
   ListMusic,
   ArrowRight,
 } from 'lucide-react';
-import { AudioEngine, TRACKS } from '../../../audio/AudioEngine';
+import { HowlerEngine, TRACKS } from '../../../audio/howlerEngine';
 
 interface MobileRadioSceneProps {
   onNext: () => void;
 }
 
 export const MobileRadioScene: React.FC<MobileRadioSceneProps> = ({ onNext }) => {
-  const [audioState, setAudioState] = useState(() => AudioEngine.getState());
+  const [audioState, setAudioState] = useState(() => HowlerEngine.getState());
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [vinylAngle, setVinylAngle] = useState(0);
 
   useEffect(() => {
-    const unsubscribe = AudioEngine.subscribe(() => {
-      setAudioState(AudioEngine.getState());
+    const unsubscribe = HowlerEngine.subscribe(() => {
+      setAudioState(HowlerEngine.getState());
     });
 
     const anim = setInterval(() => {
-      if (AudioEngine.getState().isPlaying) {
+      if (HowlerEngine.getState().isPlaying) {
         setVinylAngle((prev) => (prev + 3) % 360);
       }
     }, 40);
@@ -42,9 +42,9 @@ export const MobileRadioScene: React.FC<MobileRadioSceneProps> = ({ onNext }) =>
   };
 
   const handleSelectTrack = (index: number) => {
-    AudioEngine.setTrack(index);
-    AudioEngine.play();
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.setTrack(index);
+    HowlerEngine.play();
+    HowlerEngine.triggerLightPulseSound();
     setIsSheetOpen(false);
   };
 
@@ -137,8 +137,8 @@ export const MobileRadioScene: React.FC<MobileRadioSceneProps> = ({ onNext }) =>
         <div className="flex items-center justify-center gap-6 mt-3">
           <button
             onClick={() => {
-              AudioEngine.triggerLightPulseSound();
-              AudioEngine.prevTrack();
+              HowlerEngine.triggerLightPulseSound();
+              HowlerEngine.prevTrack();
             }}
             className="p-3 rounded-full bg-zinc-900 text-zinc-300 active:scale-95 transition-transform"
             aria-label="Previous Track"
@@ -148,8 +148,8 @@ export const MobileRadioScene: React.FC<MobileRadioSceneProps> = ({ onNext }) =>
 
           <button
             onClick={() => {
-              AudioEngine.triggerLightPulseSound();
-              AudioEngine.togglePlay();
+              HowlerEngine.triggerLightPulseSound();
+              HowlerEngine.togglePlay();
             }}
             className="w-14 h-14 rounded-full bg-gradient-to-b from-amber-400 to-amber-600 border-2 border-amber-300 flex items-center justify-center text-black font-black shadow-[0_0_25px_rgba(240,124,34,0.6)] active:scale-95 transition-transform"
             aria-label={audioState.isPlaying ? 'Pause' : 'Play'}
@@ -163,8 +163,8 @@ export const MobileRadioScene: React.FC<MobileRadioSceneProps> = ({ onNext }) =>
 
           <button
             onClick={() => {
-              AudioEngine.triggerLightPulseSound();
-              AudioEngine.nextTrack();
+              HowlerEngine.triggerLightPulseSound();
+              HowlerEngine.nextTrack();
             }}
             className="p-3 rounded-full bg-zinc-900 text-zinc-300 active:scale-95 transition-transform"
             aria-label="Next Track"
@@ -178,7 +178,7 @@ export const MobileRadioScene: React.FC<MobileRadioSceneProps> = ({ onNext }) =>
       <div className="relative z-10 w-full max-w-xs pt-2">
         <button
           onClick={() => {
-            AudioEngine.triggerLightPulseSound();
+            HowlerEngine.triggerLightPulseSound();
             onNext();
           }}
           className="w-full py-3 rounded-full bg-zinc-900/90 border border-amber-500/50 text-white font-bold text-xs tracking-[0.2em] uppercase font-['Space_Grotesk'] hover:border-amber-400 active:scale-95 transition-all flex items-center justify-center gap-2"

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Play, Pause, Disc, ChevronRight } from 'lucide-react';
-import { AudioEngine } from '../../audio/AudioEngine';
+import { HowlerEngine } from '../../audio/howlerEngine';
 
 interface InteractiveDJBoothProps {
   onNext: () => void;
@@ -22,14 +22,14 @@ export const InteractiveDJBooth: React.FC<InteractiveDJBoothProps> = ({ onNext }
   const lastMouseXRef = useRef(0);
 
   const handlePlayToggle = () => {
-    AudioEngine.togglePlay();
+    HowlerEngine.togglePlay();
     setIsPlaying(!isPlaying);
   };
 
   const handleFilterChange = (val: number) => {
     setFilterKnob(val);
     // 0 to 100 normalized to 0 to 1
-    AudioEngine.setDJFilter(val / 100);
+    HowlerEngine.setDJFilter(val / 100);
   };
 
   // Jogwheel scratch interaction Deck A
@@ -47,7 +47,7 @@ export const InteractiveDJBooth: React.FC<InteractiveDJBoothProps> = ({ onNext }
 
     if (Math.abs(deltaX) > 2) {
       setDeckARotation((prev) => prev + deltaX * 1.5);
-      AudioEngine.triggerScratch(deltaX / 10);
+      HowlerEngine.triggerScratch(deltaX / 10);
     }
   };
 
@@ -124,7 +124,7 @@ export const InteractiveDJBooth: React.FC<InteractiveDJBoothProps> = ({ onNext }
             <div className="w-full flex justify-between items-center mt-4">
               <div className="flex gap-2">
                 <button
-                  onClick={() => AudioEngine.triggerLightPulseSound()}
+                  onClick={() => HowlerEngine.triggerLightPulseSound()}
                   className="w-11 h-11 rounded-full bg-orange-950/80 border border-orange-500/80 text-orange-400 font-bold text-xs flex items-center justify-center hover:bg-orange-900 shadow-md active:scale-95"
                 >
                   CUE
@@ -257,7 +257,7 @@ export const InteractiveDJBooth: React.FC<InteractiveDJBoothProps> = ({ onNext }
             <div
               onClick={() => {
                 setDeckBRotation((prev) => prev + 35);
-                AudioEngine.triggerScratch(2);
+                HowlerEngine.triggerScratch(2);
               }}
               className="relative w-44 h-44 md:w-52 md:h-52 rounded-full bg-gradient-to-br from-zinc-800 via-zinc-950 to-zinc-900 border-4 border-zinc-700 shadow-2xl flex items-center justify-center cursor-pointer hover:border-amber-500/80 transition-colors"
               style={{
@@ -275,7 +275,7 @@ export const InteractiveDJBooth: React.FC<InteractiveDJBoothProps> = ({ onNext }
             <div className="w-full flex justify-between items-center mt-4">
               <div className="flex gap-2">
                 <button
-                  onClick={() => AudioEngine.triggerLightPulseSound()}
+                  onClick={() => HowlerEngine.triggerLightPulseSound()}
                   className="w-11 h-11 rounded-full bg-orange-950/80 border border-orange-500/80 text-orange-400 font-bold text-xs flex items-center justify-center hover:bg-orange-900 shadow-md active:scale-95"
                 >
                   CUE

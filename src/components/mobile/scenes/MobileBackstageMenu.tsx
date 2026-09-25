@@ -11,7 +11,7 @@ import {
   Eye,
 } from 'lucide-react';
 import type { NavDestination, StoryboardScene } from '../../../types/navigation';
-import { AudioEngine } from '../../../audio/AudioEngine';
+import { HowlerEngine } from '../../../audio/howlerEngine';
 
 interface MobileBackstageMenuProps {
   isOpen: boolean;
@@ -33,7 +33,7 @@ export const MobileBackstageMenu: React.FC<MobileBackstageMenuProps> = ({
   if (!isOpen) return null;
 
   const handleDestination = (dest: NavDestination, scene?: StoryboardScene) => {
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.triggerLightPulseSound();
     onClose();
     if (scene) {
       onSelectScene(scene);
@@ -44,7 +44,7 @@ export const MobileBackstageMenu: React.FC<MobileBackstageMenuProps> = ({
 
   const handleSecretPyro = () => {
     setTestSFXActive(true);
-    AudioEngine.triggerPyroDropSound();
+    HowlerEngine.triggerPyroDropSound();
     setTimeout(() => setTestSFXActive(false), 800);
   };
 
@@ -72,7 +72,7 @@ export const MobileBackstageMenu: React.FC<MobileBackstageMenuProps> = ({
 
         <button
           onClick={() => {
-            AudioEngine.triggerLightPulseSound();
+            HowlerEngine.triggerLightPulseSound();
             onClose();
           }}
           className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-zinc-300 hover:text-white active:scale-95 transition-transform"

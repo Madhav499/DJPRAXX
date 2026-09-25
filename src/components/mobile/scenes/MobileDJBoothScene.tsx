@@ -1,13 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { Play, Pause, Disc, ArrowRight } from 'lucide-react';
-import { AudioEngine } from '../../../audio/AudioEngine';
+import { HowlerEngine } from '../../../audio/howlerEngine';
 
 interface MobileDJBoothSceneProps {
   onNext: () => void;
 }
 
 export const MobileDJBoothScene: React.FC<MobileDJBoothSceneProps> = ({ onNext }) => {
-  const [isPlaying, setIsPlaying] = useState(() => AudioEngine.getState().isPlaying);
+  const [isPlaying, setIsPlaying] = useState(() => HowlerEngine.getState().isPlaying);
   const [filterVal, setFilterVal] = useState(50);
   const [crossfaderVal, setCrossfaderVal] = useState(50);
   const [jogAngle, setJogAngle] = useState(0);
@@ -17,20 +17,20 @@ export const MobileDJBoothScene: React.FC<MobileDJBoothSceneProps> = ({ onNext }
   const lastTouchPosRef = useRef({ x: 0, y: 0 });
 
   const handlePlayToggle = () => {
-    AudioEngine.togglePlay();
+    HowlerEngine.togglePlay();
     setIsPlaying(!isPlaying);
   };
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = parseFloat(e.target.value);
     setFilterVal(val);
-    AudioEngine.setDJFilter(val / 100);
+    HowlerEngine.setDJFilter(val / 100);
   };
 
   const handleCrossfaderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = parseFloat(e.target.value);
     setCrossfaderVal(val);
-    AudioEngine.setVolume(val / 100);
+    HowlerEngine.setVolume(val / 100);
   };
 
   // Jogwheel touch scratch
@@ -50,7 +50,7 @@ export const MobileDJBoothScene: React.FC<MobileDJBoothSceneProps> = ({ onNext }
     const delta = dx + dy;
     if (Math.abs(delta) > 1) {
       setJogAngle((prev) => prev + delta * 2);
-      AudioEngine.triggerScratch(delta / 12);
+      HowlerEngine.triggerScratch(delta / 12);
     }
   };
 
@@ -60,7 +60,7 @@ export const MobileDJBoothScene: React.FC<MobileDJBoothSceneProps> = ({ onNext }
 
   const handleCuePad = (padIndex: number) => {
     setActivePad(padIndex);
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.triggerLightPulseSound();
     setTimeout(() => setActivePad(null), 200);
   };
 
@@ -205,7 +205,7 @@ export const MobileDJBoothScene: React.FC<MobileDJBoothSceneProps> = ({ onNext }
       <div className="relative z-10 w-full max-w-xs pt-2">
         <button
           onClick={() => {
-            AudioEngine.triggerLightPulseSound();
+            HowlerEngine.triggerLightPulseSound();
             onNext();
           }}
           className="w-full py-3 rounded-full bg-zinc-900/90 border border-amber-500/50 text-white font-bold text-xs tracking-[0.2em] uppercase font-['Space_Grotesk'] hover:border-amber-400 active:scale-95 transition-all flex items-center justify-center gap-2"

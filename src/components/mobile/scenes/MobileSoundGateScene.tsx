@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Volume2, ChevronUp } from 'lucide-react';
-import { AudioEngine } from '../../../audio/AudioEngine';
+import { HowlerEngine } from '../../../audio/howlerEngine';
 
 interface MobileSoundGateSceneProps {
   onEnter: () => void;
@@ -11,8 +11,8 @@ export const MobileSoundGateScene: React.FC<MobileSoundGateSceneProps> = ({ onEn
 
   const handleSoundOn = async () => {
     setIsActivating(true);
-    await AudioEngine.startAudio();
-    AudioEngine.triggerLightPulseSound();
+    await HowlerEngine.startAudio();
+    HowlerEngine.triggerLightPulseSound();
     setTimeout(() => {
       onEnter();
     }, 450);

@@ -9,23 +9,23 @@ import {
   Activity,
   X,
 } from 'lucide-react';
-import { AudioEngine } from '../../../audio/AudioEngine';
+import { HowlerEngine } from '../../../audio/howlerEngine';
 
 export const MobileAudioUI: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [audioState, setAudioState] = useState(() => AudioEngine.getState());
+  const [audioState, setAudioState] = useState(() => HowlerEngine.getState());
   const [energy, setEnergy] = useState({ bass: 0, mid: 0, treble: 0, overall: 0 });
 
   useEffect(() => {
-    // Subscribe to AudioEngine state changes
-    const unsubscribe = AudioEngine.subscribe(() => {
-      setAudioState(AudioEngine.getState());
+    // Subscribe to HowlerEngine state changes
+    const unsubscribe = HowlerEngine.subscribe(() => {
+      setAudioState(HowlerEngine.getState());
     });
 
     // Real-time visualizer polling
     const interval = setInterval(() => {
-      if (AudioEngine.getState().isPlaying) {
-        const analysis = AudioEngine.getAudioAnalysis();
+      if (HowlerEngine.getState().isPlaying) {
+        const analysis = HowlerEngine.getAudioAnalysis();
         setEnergy({
           bass: analysis.bass,
           mid: analysis.mid,
@@ -53,7 +53,7 @@ export const MobileAudioUI: React.FC = () => {
       <div className="fixed top-3 right-3 z-40 select-none">
         <button
           onClick={() => {
-            AudioEngine.triggerLightPulseSound();
+            HowlerEngine.triggerLightPulseSound();
             setIsOpen(!isOpen);
           }}
           className="flex items-center gap-2 py-1.5 px-3 rounded-full bg-zinc-950/80 border border-amber-500/30 backdrop-blur-md shadow-[0_0_18px_rgba(240,124,34,0.25)] active:scale-95 transition-all group focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
@@ -152,8 +152,8 @@ export const MobileAudioUI: React.FC = () => {
             <div className="flex items-center justify-center gap-5">
               <button
                 onClick={() => {
-                  AudioEngine.triggerLightPulseSound();
-                  AudioEngine.prevTrack();
+                  HowlerEngine.triggerLightPulseSound();
+                  HowlerEngine.prevTrack();
                 }}
                 className="p-3 rounded-full bg-zinc-900 border border-white/10 active:scale-95 transition-transform text-zinc-300 hover:text-white"
                 aria-label="Previous Track"
@@ -163,8 +163,8 @@ export const MobileAudioUI: React.FC = () => {
 
               <button
                 onClick={() => {
-                  AudioEngine.triggerLightPulseSound();
-                  AudioEngine.togglePlay();
+                  HowlerEngine.triggerLightPulseSound();
+                  HowlerEngine.togglePlay();
                 }}
                 className="w-14 h-14 rounded-full bg-gradient-to-b from-amber-400 to-amber-600 border border-amber-300 flex items-center justify-center text-black font-black shadow-[0_0_25px_rgba(240,124,34,0.6)] active:scale-95 transition-transform"
                 aria-label={audioState.isPlaying ? 'Pause Audio' : 'Play Audio'}
@@ -178,8 +178,8 @@ export const MobileAudioUI: React.FC = () => {
 
               <button
                 onClick={() => {
-                  AudioEngine.triggerLightPulseSound();
-                  AudioEngine.nextTrack();
+                  HowlerEngine.triggerLightPulseSound();
+                  HowlerEngine.nextTrack();
                 }}
                 className="p-3 rounded-full bg-zinc-900 border border-white/10 active:scale-95 transition-transform text-zinc-300 hover:text-white"
                 aria-label="Next Track"
@@ -192,8 +192,8 @@ export const MobileAudioUI: React.FC = () => {
             <div className="flex items-center gap-3 pt-2 border-t border-white/5">
               <button
                 onClick={() => {
-                  AudioEngine.triggerLightPulseSound();
-                  AudioEngine.toggleMute();
+                  HowlerEngine.triggerLightPulseSound();
+                  HowlerEngine.toggleMute();
                 }}
                 className="p-2 rounded-lg bg-zinc-900 text-amber-400 active:scale-95"
                 aria-label={audioState.isMuted ? 'Unmute' : 'Mute'}
@@ -211,7 +211,7 @@ export const MobileAudioUI: React.FC = () => {
                 max="1"
                 step="0.05"
                 defaultValue="0.75"
-                onChange={(e) => AudioEngine.setVolume(parseFloat(e.target.value))}
+                onChange={(e) => HowlerEngine.setVolume(parseFloat(e.target.value))}
                 className="w-full accent-amber-500 cursor-pointer h-1 bg-zinc-800 rounded-lg"
                 aria-label="Master Volume"
               />

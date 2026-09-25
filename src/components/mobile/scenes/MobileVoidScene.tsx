@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronUp } from 'lucide-react';
-import { AudioEngine } from '../../../audio/AudioEngine';
+import { HowlerEngine } from '../../../audio/howlerEngine';
 
 interface MobileVoidSceneProps {
   onNext: () => void;
@@ -27,7 +27,7 @@ export const MobileVoidScene: React.FC<MobileVoidSceneProps> = ({ onNext }) => {
   const triggerNext = () => {
     if (isTransitioning) return;
     setIsTransitioning(true);
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.triggerLightPulseSound();
     setTimeout(onNext, 400);
   };
 

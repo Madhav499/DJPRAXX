@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Calendar, MapPin, Users, Sparkles, ChevronRight } from 'lucide-react';
-import { AudioEngine } from '../../audio/AudioEngine';
+import { HowlerEngine } from '../../audio/howlerEngine';
 
 export interface EventItem {
   id: string;
@@ -81,7 +81,7 @@ export const EventArchiveScene: React.FC<EventArchiveSceneProps> = ({
     filter === 'All' ? EVENTS_DATA : EVENTS_DATA.filter((e) => e.category === filter);
 
   const handleCardClick = (event: EventItem) => {
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.triggerLightPulseSound();
     onSelectEvent(event);
   };
 

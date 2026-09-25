@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MapPin, Calendar, ArrowRight } from 'lucide-react';
 import type { EventItem } from '../../scenes/12_EventArchiveScene';
-import { AudioEngine } from '../../../audio/AudioEngine';
+import { HowlerEngine } from '../../../audio/howlerEngine';
 
 interface MobileEventDetailSceneProps {
   event: EventItem;
@@ -55,7 +55,7 @@ export const MobileEventDetailScene: React.FC<MobileEventDetailSceneProps> = ({
             <button
               key={`thumb-${idx}`}
               onClick={() => {
-                AudioEngine.triggerLightPulseSound();
+                HowlerEngine.triggerLightPulseSound();
                 setSelectedPhotoIndex(idx);
               }}
               className={`flex-1 h-14 rounded-xl overflow-hidden border transition-all ${
@@ -96,7 +96,7 @@ export const MobileEventDetailScene: React.FC<MobileEventDetailSceneProps> = ({
       <div className="relative z-10 w-full max-w-xs mx-auto pt-2">
         <button
           onClick={() => {
-            AudioEngine.triggerLightPulseSound();
+            HowlerEngine.triggerLightPulseSound();
             onNext();
           }}
           className="w-full py-3 rounded-full bg-zinc-900/90 border border-amber-500/50 text-white font-bold text-xs tracking-[0.2em] uppercase font-['Space_Grotesk'] hover:border-amber-400 active:scale-95 transition-all flex items-center justify-center gap-2"

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Check, Sparkles, ArrowRight } from 'lucide-react';
 import type { BookingFormData } from './MobileBookingScene';
-import { AudioEngine } from '../../../audio/AudioEngine';
+import { HowlerEngine } from '../../../audio/howlerEngine';
 
 interface MobileBookingSuccessSceneProps {
   bookingData: Partial<BookingFormData>;
@@ -21,7 +21,7 @@ export const MobileBookingSuccessScene: React.FC<MobileBookingSuccessSceneProps>
     setSignalTracerPos(x);
     setShowSecretSignal(true);
     if (Math.random() > 0.6) {
-      AudioEngine.triggerLightPulseSound();
+      HowlerEngine.triggerLightPulseSound();
     }
   };
 
@@ -104,7 +104,7 @@ export const MobileBookingSuccessScene: React.FC<MobileBookingSuccessSceneProps>
       <div className="relative z-10 w-full max-w-xs mx-auto pt-2">
         <button
           onClick={() => {
-            AudioEngine.triggerLightPulseSound();
+            HowlerEngine.triggerLightPulseSound();
             onNext();
           }}
           className="w-full py-3.5 rounded-full bg-zinc-900/90 border border-amber-500/50 text-white font-bold text-xs tracking-[0.2em] uppercase font-['Space_Grotesk'] hover:border-amber-400 active:scale-95 transition-all flex items-center justify-center gap-2"

@@ -8,7 +8,7 @@ import type { BookingFormData } from './scenes/MobileBookingScene';
 import { PocketRig } from './navigation/PocketRig';
 import { MobileAudioUI } from './audio/MobileAudioUI';
 import { MobileBackstageMenu } from './scenes/MobileBackstageMenu';
-import { AudioEngine } from '../../audio/AudioEngine';
+import { HowlerEngine } from '../../audio/howlerEngine';
 
 // Mobile Scene Components
 import { MobileLoadingScene } from './scenes/MobileLoadingScene';
@@ -66,7 +66,7 @@ export const MobileExperience: React.FC<MobileExperienceProps> = ({
     longPressTimerRef.current = window.setTimeout(() => {
       setIsSecretBackstageUnlocked(true);
       setIsBackstageMenuOpen(true);
-      AudioEngine.triggerPyroDropSound();
+      HowlerEngine.triggerPyroDropSound();
     }, 1200);
   };
 
@@ -140,7 +140,7 @@ export const MobileExperience: React.FC<MobileExperienceProps> = ({
           <div className="pointer-events-auto flex items-center gap-2">
             <button
               onClick={() => {
-                AudioEngine.triggerLightPulseSound();
+                HowlerEngine.triggerLightPulseSound();
                 setIsBackstageMenuOpen(true);
               }}
               className="p-1.5 px-2.5 rounded-full bg-zinc-950/80 border border-white/10 text-[10px] font-mono text-zinc-300 backdrop-blur-md active:scale-95 transition-all"

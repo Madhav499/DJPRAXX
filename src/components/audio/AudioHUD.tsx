@@ -1,17 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { AudioEngine } from '../../audio/AudioEngine';
-import { Volume2, VolumeX, Play, Pause, SkipForward, Disc3 } from 'lucide-react';
+import React, { useEffect, useState, useRef } from "react";
+import { HowlerEngine } from "../../audio/howlerEngine";
+import {
+  Volume2,
+  VolumeX,
+  Play,
+  Pause,
+  SkipForward,
+  Disc3,
+} from "lucide-react";
 
 export const AudioHUD: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [trackTitle, setTrackTitle] = useState('');
+  const [trackTitle, setTrackTitle] = useState("");
   const [bpm, setBpm] = useState(124);
-  const [eqLevels, setEqLevels] = useState<number[]>([20, 45, 75, 55, 30]);
+  const [eqLevels, setEqLevels] = useState<number[]>([12, 12, 12, 12, 12]);
+
+  const eqLevelsRef = useRef([12, 12, 12, 12, 12]);
 
   useEffect(() => {
     const updateState = () => {
-      const st = AudioEngine.getState();
+      const st = HowlerEngine.getState();
+
       setIsPlaying(st.isPlaying);
       setIsMuted(st.isMuted);
       setTrackTitle(st.currentTrack.title);
@@ -19,25 +29,40 @@ export const AudioHUD: React.FC = () => {
     };
 
     updateState();
-    const unsubscribe = AudioEngine.subscribe(updateState);
 
-    // Audio visualizer loop for mini HUD equalizer bars
+    const unsubscribe = HowlerEngine.subscribe(updateState);
+
     let animId: number;
+
     const updateEQ = () => {
       animId = requestAnimationFrame(updateEQ);
-      const analysis = AudioEngine.getAudioAnalysis();
-      if (AudioEngine.getState().isPlaying) {
-        setEqLevels([
-          Math.max(15, analysis.bass * 90),
-          Math.max(15, (analysis.bass + analysis.mid) * 55),
-          Math.max(15, analysis.mid * 85),
-          Math.max(15, (analysis.mid + analysis.treble) * 65),
-          Math.max(15, analysis.treble * 80),
-        ]);
-      } else {
-        setEqLevels([12, 12, 12, 12, 12]);
-      }
+
+      const analysis = HowlerEngine.getAudioAnalysis();
+      const isPlaying = HowlerEngine.getState().isPlaying;
+
+      const targetLevels = isPlaying
+        ? [
+            Math.max(12, Math.min(100, analysis.bass * 100)),
+            Math.max(12, Math.min(100, (analysis.bass + analysis.mid) * 60)),
+            Math.max(12, Math.min(100, analysis.mid * 95)),
+            Math.max(12, Math.min(100, (analysis.mid + analysis.treble) * 60)),
+            Math.max(12, Math.min(100, analysis.treble * 90)),
+          ]
+        : [12, 12, 12, 12, 12];
+
+      const smoothLevels = eqLevelsRef.current.map((current, index) => {
+        const target = targetLevels[index];
+
+        // Fast rise on beat, slower fall afterwards
+        const smoothing = target > current ? 0.32 : 0.12;
+
+        return current + (target - current) * smoothing;
+      });
+
+      eqLevelsRef.current = smoothLevels;
+      setEqLevels(smoothLevels);
     };
+
     updateEQ();
 
     return () => {
@@ -47,15 +72,15 @@ export const AudioHUD: React.FC = () => {
   }, []);
 
   const handleTogglePlay = () => {
-    AudioEngine.togglePlay();
+    HowlerEngine.togglePlay();
   };
 
   const handleNext = () => {
-    AudioEngine.nextTrack();
+    HowlerEngine.nextTrack();
   };
 
   const handleToggleMute = () => {
-    AudioEngine.toggleMute();
+    HowlerEngine.toggleMute();
   };
 
   return (
@@ -68,7 +93,7 @@ export const AudioHUD: React.FC = () => {
         <div className="relative flex items-center justify-center">
           <Disc3
             className={`w-6 h-6 text-amber-500 transition-transform ${
-              isPlaying ? 'animate-[spin_4s_linear_infinite]' : ''
+              isPlaying ? "animate-[spin_4s_linear_infinite]" : ""
             }`}
           />
           {isPlaying && (
@@ -79,14 +104,14 @@ export const AudioHUD: React.FC = () => {
         {/* Track Title & BPM */}
         <div className="flex flex-col min-w-[120px] max-w-[160px]">
           <span className="text-[11px] font-semibold text-white truncate font-['Space_Grotesk']">
-            {trackTitle || 'PRAXX Radio'}
+            {trackTitle || "PRAXX Radio"}
           </span>
           <div className="flex items-center gap-2">
             <span className="text-[9px] text-amber-400/90 font-mono tracking-wider">
               {bpm} BPM
             </span>
             <span className="text-[8px] text-zinc-500 uppercase tracking-widest">
-              {isPlaying ? 'ON AIR' : 'PAUSED'}
+              {isPlaying ? "ON AIR" : "PAUSED"}
             </span>
           </div>
         </div>
@@ -96,8 +121,10 @@ export const AudioHUD: React.FC = () => {
           {eqLevels.map((lvl, idx) => (
             <div
               key={idx}
-              className="w-1 bg-gradient-to-t from-amber-600 to-amber-300 rounded-t-sm transition-all duration-75"
-              style={{ height: `${lvl}%` }}
+              className="w-1 bg-gradient-to-t from-amber-600 to-amber-300 rounded-t-sm will-change-[height]"
+              style={{
+                height: `${lvl}%`,
+              }}
             />
           ))}
         </div>
@@ -106,10 +133,14 @@ export const AudioHUD: React.FC = () => {
         <button
           onClick={handleTogglePlay}
           className="p-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 border border-amber-500/30 transition-all active:scale-95"
-          aria-label={isPlaying ? 'Pause Audio' : 'Play Audio'}
-          title={isPlaying ? 'Pause' : 'Play'}
+          aria-label={isPlaying ? "Pause Audio" : "Play Audio"}
+          title={isPlaying ? "Pause" : "Play"}
         >
-          {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 translate-x-0.5" />}
+          {isPlaying ? (
+            <Pause className="w-4 h-4" />
+          ) : (
+            <Play className="w-4 h-4 translate-x-0.5" />
+          )}
         </button>
 
         {/* Skip Track */}
@@ -126,10 +157,14 @@ export const AudioHUD: React.FC = () => {
         <button
           onClick={handleToggleMute}
           className="p-1.5 rounded-xl hover:bg-white/10 text-zinc-400 hover:text-white transition-all active:scale-95"
-          aria-label={isMuted ? 'Unmute Audio' : 'Mute Audio'}
-          title={isMuted ? 'Unmute' : 'Mute'}
+          aria-label={isMuted ? "Unmute Audio" : "Mute Audio"}
+          title={isMuted ? "Unmute" : "Mute"}
         >
-          {isMuted ? <VolumeX className="w-4 h-4 text-red-400" /> : <Volume2 className="w-4 h-4" />}
+          {isMuted ? (
+            <VolumeX className="w-4 h-4 text-red-400" />
+          ) : (
+            <Volume2 className="w-4 h-4" />
+          )}
         </button>
       </div>
     </aside>

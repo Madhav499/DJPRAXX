@@ -4,7 +4,7 @@ import {
   type NavDestination,
   type NavItem,
 } from '../../../types/navigation';
-import { AudioEngine } from '../../../audio/AudioEngine';
+import { HowlerEngine } from '../../../audio/howlerEngine';
 
 interface MobilePocketRigDetailSceneProps {
   activeNav: NavDestination;
@@ -20,7 +20,7 @@ export const MobilePocketRigDetailScene: React.FC<MobilePocketRigDetailSceneProp
   const [hoveredItem, setHoveredItem] = useState<NavDestination | null>(null);
 
   const handleSelect = (item: NavItem) => {
-    AudioEngine.triggerLightPulseSound();
+    HowlerEngine.triggerLightPulseSound();
     onSelectNav(item.id);
   };
 
