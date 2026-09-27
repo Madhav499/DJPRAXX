@@ -1,14 +1,13 @@
 @import "tailwindcss";
 
 :root {
+  --primary: #f07c22;
+
   --bg-void: #050507;
   --bg-card: rgba(14, 15, 20, 0.85);
   --bg-surface: #0c0d12;
   --bg-surface-border: rgba(255, 255, 255, 0.08);
 
-  --amber-50: #fff6ee;
-  --amber-100: #fed7aa;
-  --amber-400: #fb923c;
   --amber-500: #f07c22;
   --amber-600: #ea580c;
   --amber-core: #fff2df;
@@ -24,16 +23,47 @@
   --text-muted: #64748b;
   --text-dark: #334155;
 
-  --font-display: 'Syne', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-tech: 'Space Grotesk', monospace;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: "Syne", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-tech: "Space Grotesk", monospace;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-*, *::before, *::after {
+@theme {
+  /* Brand */
+  --color-primary: #f07c22;
+  --color-secondary: #ea580c;
+
+  /* Backgrounds */
+  --color-bg-primary: #050507;
+  --color-bg-secondary: #0c0d12;
+  --color-bg-surface: rgba(14, 15, 20, 0.85);
+
+  /* Borders */
+  --color-border: rgba(255, 255, 255, 0.08);
+
+  /* Text */
+  --color-text: #ffffff;
+  --color-text-muted: #cbd5e1;
+  --color-text-subtle: #64748b;
+
+  /* Effects */
+  --color-primary-glow: rgba(240, 124, 34, 0.4);
+  --color-primary-halo: rgba(240, 124, 34, 0.15);
+
+  /* Fonts */
+  --font-display: "Syne", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-tech: "Space Grotesk", monospace;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   width: 100%;
   min-height: 100%;
   background-color: var(--bg-void);
@@ -72,11 +102,15 @@ html, body {
 
 /* Stage Lighting Effects */
 .beam-glow {
-  box-shadow: 0 0 35px var(--amber-glow), 0 0 80px var(--amber-halo);
+  box-shadow:
+    0 0 35px var(--amber-glow),
+    0 0 80px var(--amber-halo);
 }
 
 .text-glow {
-  text-shadow: 0 0 12px rgba(240, 124, 34, 0.6), 0 0 30px rgba(240, 124, 34, 0.3);
+  text-shadow:
+    0 0 12px rgba(240, 124, 34, 0.6),
+    0 0 30px rgba(240, 124, 34, 0.3);
 }
 
 .text-glow-subtle {
@@ -85,39 +119,53 @@ html, body {
 
 /* Metallic brushed texture effect */
 .metal-panel {
-  background: linear-gradient(180deg, rgba(30, 32, 40, 0.7) 0%, rgba(14, 15, 20, 0.9) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(30, 32, 40, 0.7) 0%,
+    rgba(14, 15, 20, 0.9) 100%
+  );
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 8px 32px rgba(0, 0, 0, 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 8px 32px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(12px);
 }
 
 .metal-panel-amber {
-  background: linear-gradient(180deg, rgba(35, 25, 18, 0.75) 0%, rgba(14, 12, 10, 0.95) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(35, 25, 18, 0.75) 0%,
+    rgba(14, 12, 10, 0.95) 100%
+  );
   border: 1px solid rgba(240, 124, 34, 0.3);
-  box-shadow: inset 0 1px 0 rgba(240, 124, 34, 0.25), 0 10px 30px rgba(0, 0, 0, 0.7);
+  box-shadow:
+    inset 0 1px 0 rgba(240, 124, 34, 0.25),
+    0 10px 30px rgba(0, 0, 0, 0.7);
 }
 
 /* Lighting Truss Border */
 .truss-pattern {
-  background-image: repeating-linear-gradient(
-    45deg,
-    rgba(255, 255, 255, 0.03) 0,
-    rgba(255, 255, 255, 0.03) 2px,
-    transparent 0,
-    transparent 12px
-  ),
-  repeating-linear-gradient(
-    -45deg,
-    rgba(255, 255, 255, 0.03) 0,
-    rgba(255, 255, 255, 0.03) 2px,
-    transparent 0,
-    transparent 12px
-  );
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.03) 0,
+      rgba(255, 255, 255, 0.03) 2px,
+      transparent 0,
+      transparent 12px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(255, 255, 255, 0.03) 0,
+      rgba(255, 255, 255, 0.03) 2px,
+      transparent 0,
+      transparent 12px
+    );
 }
 
 /* Audio Wave Pulse Animation */
 @keyframes audioPulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scaleY(0.3);
     opacity: 0.6;
   }
@@ -140,9 +188,19 @@ html, body {
 }
 
 @keyframes strobeFlash {
-  0%, 100% { opacity: 0; }
-  10%, 30%, 50% { opacity: 1; }
-  20%, 40% { opacity: 0.2; }
+  0%,
+  100% {
+    opacity: 0;
+  }
+  10%,
+  30%,
+  50% {
+    opacity: 1;
+  }
+  20%,
+  40% {
+    opacity: 0.2;
+  }
 }
 
 .animate-strobe {
@@ -162,5 +220,79 @@ html, body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+.loading-bars line {
+  stroke: #f97316;
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: 0.3;
+
+  filter: drop-shadow(0 0 3px rgba(249, 115, 22, 0.5));
+
+  /*
+   * Important for SVG:
+   * Makes transform origin work relative
+   * to each individual line.
+   */
+  transform-box: fill-box;
+  transform-origin: center;
+
+  animation: frequencyPulse 1.1s ease-in-out infinite;
+}
+
+/* Different timing = more natural audio visualization */
+
+.loading-bars line:nth-child(1) {
+  animation-delay: -0.2s;
+}
+
+.loading-bars line:nth-child(2) {
+  animation-delay: -0.6s;
+}
+
+.loading-bars line:nth-child(3) {
+  animation-delay: -0.1s;
+}
+
+.loading-bars line:nth-child(4) {
+  animation-delay: -0.8s;
+}
+
+.loading-bars line:nth-child(5) {
+  animation-delay: -0.4s;
+}
+
+.loading-bars line:nth-child(6) {
+  animation-delay: -0.5s;
+}
+
+.loading-bars line:nth-child(7) {
+  animation-delay: -0.9s;
+}
+
+.loading-bars line:nth-child(8) {
+  animation-delay: -0.15s;
+}
+
+.loading-bars line:nth-child(9) {
+  animation-delay: -0.65s;
+}
+
+.loading-bars line:nth-child(10) {
+  animation-delay: -0.35s;
+}
+
+@keyframes frequencyPulse {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+    opacity: 0.2;
+  }
+
+  50% {
+    transform: scaleY(1);
+    opacity: 0.65;
   }
 }

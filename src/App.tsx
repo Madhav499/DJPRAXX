@@ -276,3 +276,103 @@ export function App() {
 }
 
 export default App;
+
+// import { useState } from "react";
+// import { AnimatePresence, motion } from "framer-motion";
+
+// const scenes = [
+//   "/images/outside.jpg",
+//   "/images/entrance.jpg",
+//   "/images/stage.jpg",
+//   "/images/final.jpg"
+// ];
+
+// export default function EventExperience() {
+
+//   const [step,setStep] = useState(0);
+
+//   const nextScene = () => {
+//     if(step < scenes.length - 1){
+//       setStep(step + 1);
+//     }
+//   };
+
+//   return (
+
+//     <div className="
+//       relative
+//       h-screen
+//       overflow-hidden
+//       bg-black
+//     ">
+
+//       <AnimatePresence mode="sync">
+
+//         <motion.img
+
+//           key={scenes[step]}
+
+//           src={scenes[step]}
+
+//           className="
+//             absolute
+//             inset-0
+//             h-full
+//             w-full
+//             object-cover
+//           "
+
+//           initial={{
+//             scale:1.25,
+//             opacity:0,
+//             filter:"blur(15px)"
+//           }}
+
+//           animate={{
+//             scale:1,
+//             opacity:1,
+//             filter:"blur(0px)"
+//           }}
+
+//           exit={{
+//             scale:1.8,
+//             opacity:0,
+//             filter:"blur(25px)"
+//           }}
+
+//           transition={{
+//             duration:1.5,
+//             ease:[0.76,0,0.24,1]
+//           }}
+
+//         />
+
+//       </AnimatePresence>
+
+//       <button
+
+//         onClick={nextScene}
+
+//         className="
+//           absolute
+//           bottom-10
+//           left-1/2
+//           -translate-x-1/2
+//           bg-white
+//           text-black
+//           px-8
+//           py-4
+//           rounded-full
+//           font-semibold
+//         "
+
+//       >
+
+//         Enter Event →
+
+//       </button>
+
+//     </div>
+
+//   )
+// }
