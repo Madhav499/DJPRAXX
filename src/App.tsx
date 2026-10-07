@@ -1,4 +1,5 @@
-import { useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { preloadImages } from "./utils/preloadImages";
 
 import { type NavDestination, NAV_ITEMS } from "./types/navigation";
 
@@ -19,6 +20,22 @@ import UILayer from "./components/layers/UILayer";
 import CanvasLayer from "./components/layers/CanvasLayer";
 
 import { SceneProvider, useScene } from "./context/SceneContext";
+
+const experienceImages = [
+  "./assets/images/JogWheel.png",
+  "./assets/images/profile/profilePic.png",
+  "./assets/images/sceneImages/03_entrance.webp",
+  "./assets/images/sceneImages/04_entrance_tunnel.webp",
+  "./assets/images/sceneImages/05_audience.webp",
+  "./assets/images/sceneImages/06_Main_Stage_Reveal.webp",
+  "./assets/images/sceneImages/07_Interactive_DJ_Booth.webp",
+  "./assets/images/sceneImages/10_Event_Archive.webp",
+  "./assets/images/sceneImages/12_Biography_Entrance.webp",
+  "./assets/images/sceneImages/13_Biography_Chapters.webp",
+  "./assets/images/sceneImages/17_Exit_Experience.webp",
+  "./assets/images/sceneImages/18_Final_Screen.webp",
+  "./assets/images/sceneImages/Music_Scene.webp",
+];
 
 function AppContent() {
   // const { isMobile, isReducedMotion: responsiveReducedMotion } =
@@ -49,6 +66,10 @@ function AppContent() {
     date: "",
     venue: "",
   });
+
+  useEffect(() => {
+    preloadImages(experienceImages);
+  }, []);
 
   // const [isReducedMotion, setIsReducedMotion] = useState(false);
 
