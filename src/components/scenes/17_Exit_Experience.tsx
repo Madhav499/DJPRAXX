@@ -1,5 +1,5 @@
 import React from "react";
-import exitExperienceImage from "../../assets/images/sceneImages/17_Exit_Experience.png";
+import exitExperienceImage from "../../assets/images/sceneImages/17_Exit_Experience.webp";
 
 const ExitExperienceScene: React.FC = () => {
   return (

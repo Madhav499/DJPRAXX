@@ -1,5 +1,5 @@
 import React from "react";
-import entranceImage from "../../assets/images/sceneImages/04_entrance_tunnel.png";
+import entranceImage from "../../assets/images/sceneImages/04_entrance_tunnel.webp";
 
 const EntranceScene: React.FC = () => {
   return (

@@ -1,5 +1,5 @@
 import React from "react";
-import audienceImage from "../../assets/images/sceneImages/05_audience.png";
+import audienceImage from "../../assets/images/sceneImages/05_audience.webp";
 
 const AudienceScene: React.FC = () => {
   return (

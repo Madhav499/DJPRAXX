@@ -1,5 +1,5 @@
 import React from "react";
-import eventArchiveImage from "../../assets/images/sceneImages/10_Event_Archive.png";
+import eventArchiveImage from "../../assets/images/sceneImages/10_Event_Archive.webp";
 
 export interface EventItem {
   id: string;

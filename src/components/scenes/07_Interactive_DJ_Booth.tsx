@@ -1,5 +1,5 @@
 import React from "react";
-import djBoothImage from "../../assets/images/sceneImages/07_Interactive_DJ_Booth.png";
+import djBoothImage from "../../assets/images/sceneImages/07_Interactive_DJ_Booth.webp";
 
 const InteractiveDJBoothScene: React.FC = () => {
   return (

@@ -1,5 +1,5 @@
 import React from "react";
-import biographyChapterImage from "../../assets/images/sceneImages/13_Biography_Chapters.png";
+import biographyChapterImage from "../../assets/images/sceneImages/13_Biography_Chapters.webp";
 
 const BiographyChapterScene: React.FC = () => {
   return (

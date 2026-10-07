@@ -1,5 +1,5 @@
 import React from "react";
-import voidArrivalImage from "../../assets/images/sceneImages/03_entrance.png";
+import voidArrivalImage from "../../assets/images/sceneImages/03_entrance.webp";
 import poster from "../../assets/images/posters/poster.jpg";
 import { motion } from "framer-motion";
 

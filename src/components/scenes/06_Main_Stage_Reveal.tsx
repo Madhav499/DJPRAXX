@@ -1,5 +1,5 @@
 import React from "react";
-import mainStageImage from "../../assets/images/sceneImages/06_Main_Stage_Reveal.png";
+import mainStageImage from "../../assets/images/sceneImages/06_Main_Stage_Reveal.webp";
 
 const MainStageScene: React.FC = () => {
   return (

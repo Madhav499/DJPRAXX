@@ -1,5 +1,5 @@
 import React from "react";
-import musicImage from "../../assets/images/sceneImages/Music_Scene.png";
+import musicImage from "../../assets/images/sceneImages/Music_Scene.webp";
 
 const MusicScene: React.FC = () => {
   return (

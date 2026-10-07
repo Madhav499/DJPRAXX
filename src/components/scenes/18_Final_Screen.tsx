@@ -1,5 +1,5 @@
 import React from "react";
-import finalScreenImage from "../../assets/images/sceneImages/18_Final_Screen.png";
+import finalScreenImage from "../../assets/images/sceneImages/18_Final_Screen.webp";
 
 const FinalScreenScene: React.FC = () => {
   return (
