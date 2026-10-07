@@ -21,20 +21,35 @@ import CanvasLayer from "./components/layers/CanvasLayer";
 
 import { SceneProvider, useScene } from "./context/SceneContext";
 
+import jogWheel from "./assets/images/JogWheel.png";
+import profilePic from "./assets/images/profile/profilePic.png";
+
+import entranceImage from "./assets/images/sceneImages/03_entrance.webp";
+import entranceTunnelImage from "./assets/images/sceneImages/04_entrance_tunnel.webp";
+import audienceImage from "./assets/images/sceneImages/05_audience.webp";
+import mainStageRevealImage from "./assets/images/sceneImages/06_Main_Stage_Reveal.webp";
+import djBoothImage from "./assets/images/sceneImages/07_Interactive_DJ_Booth.webp";
+import eventArchiveImage from "./assets/images/sceneImages/10_Event_Archive.webp";
+import biographyEntranceImage from "./assets/images/sceneImages/12_Biography_Entrance.webp";
+import biographyChaptersImage from "./assets/images/sceneImages/13_Biography_Chapters.webp";
+import exitExperienceImage from "./assets/images/sceneImages/17_Exit_Experience.webp";
+import finalScreenImage from "./assets/images/sceneImages/18_Final_Screen.webp";
+import musicSceneImage from "./assets/images/sceneImages/Music_Scene.webp";
+
 const experienceImages = [
-  "./assets/images/JogWheel.png",
-  "./assets/images/profile/profilePic.png",
-  "./assets/images/sceneImages/03_entrance.webp",
-  "./assets/images/sceneImages/04_entrance_tunnel.webp",
-  "./assets/images/sceneImages/05_audience.webp",
-  "./assets/images/sceneImages/06_Main_Stage_Reveal.webp",
-  "./assets/images/sceneImages/07_Interactive_DJ_Booth.webp",
-  "./assets/images/sceneImages/10_Event_Archive.webp",
-  "./assets/images/sceneImages/12_Biography_Entrance.webp",
-  "./assets/images/sceneImages/13_Biography_Chapters.webp",
-  "./assets/images/sceneImages/17_Exit_Experience.webp",
-  "./assets/images/sceneImages/18_Final_Screen.webp",
-  "./assets/images/sceneImages/Music_Scene.webp",
+  jogWheel,
+  profilePic,
+  entranceImage,
+  entranceTunnelImage,
+  audienceImage,
+  mainStageRevealImage,
+  djBoothImage,
+  eventArchiveImage,
+  biographyEntranceImage,
+  biographyChaptersImage,
+  exitExperienceImage,
+  finalScreenImage,
+  musicSceneImage,
 ];
 
 function AppContent() {
