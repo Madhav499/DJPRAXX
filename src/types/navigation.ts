@@ -4,7 +4,7 @@ export type NavDestination =
   | "events"
   | "story"
   | "book"
-  | "more";
+  | "profile";
 
 export interface NavItem {
   id: NavDestination;
@@ -18,25 +18,23 @@ export interface NavItem {
 
 export type StoryboardScene =
   | "01_loading"
-  | "02_sound_permission"
-  | "03_transition"
-  | "04_void_arrival"
-  | "05_entrance"
-  | "06_main_stage"
-  | "07_stage_interactive"
-  | "08_approach_booth"
-  | "09_dj_booth"
-  | "10_praxx_radio"
-  | "11_sound_universe"
-  | "12_event_archive"
-  | "13_event_detail"
-  | "14_biography_entrance"
-  | "15_biography_chapter"
-  | "16_artist_profile"
-  | "17_booking"
-  | "18_booking_success"
-  | "19_exit_experience"
-  | "20_final_screen";
+  | "02_transition"
+  | "03_entrance"
+  | "04_entrance_tunnel"
+  | "05_audience"
+  | "06_main_stage_reveal"
+  | "07_dj_booth"
+  | "08_praxx_radio"
+  | "09_sound_universe"
+  | "10_event_archive"
+  | "11_event_detail"
+  | "12_biography_entrance"
+  | "13_biography_chapter"
+  | "14_artist_profile"
+  | "15_booking"
+  | "16_booking_success"
+  | "17_exit_experience"
+  | "18_final_screen";
 
 export interface SceneMeta {
   id: StoryboardScene;
@@ -54,7 +52,7 @@ export const NAV_ITEMS: NavItem[] = [
     shortcut: "1",
     description: "Enter the main stage & arena",
     subtitle: "Main Stage Experience",
-    sceneTarget: "06_main_stage",
+    sceneTarget: "05_audience",
   },
   {
     id: "music",
@@ -63,7 +61,7 @@ export const NAV_ITEMS: NavItem[] = [
     shortcut: "2",
     description: "Explore PRAXX Radio & Sound Universe",
     subtitle: "Radio + Sound Universe",
-    sceneTarget: "10_praxx_radio",
+    sceneTarget: "08_praxx_radio",
   },
   {
     id: "events",
@@ -72,7 +70,7 @@ export const NAV_ITEMS: NavItem[] = [
     shortcut: "3",
     description: "Explore event memories & live archives",
     subtitle: "Moments That Matter",
-    sceneTarget: "12_event_archive",
+    sceneTarget: "10_event_archive",
   },
   {
     id: "story",
@@ -81,25 +79,25 @@ export const NAV_ITEMS: NavItem[] = [
     shortcut: "4",
     description: "Enter the biography journey behind the sound",
     subtitle: "Behind The Sound",
-    sceneTarget: "14_biography_entrance",
+    sceneTarget: "12_biography_entrance",
+  },
+  {
+    id: "profile",
+    label: "PROFILE",
+    target: "profile",
+    shortcut: "5",
+    description: "Explore artist profile, philosophy & journey",
+    subtitle: "Artist Profile & Info",
+    sceneTarget: "14_artist_profile",
   },
   {
     id: "book",
     label: "BOOK",
     target: "book",
-    shortcut: "5",
+    shortcut: "6",
     description: "Book DJ PRAXX for your unforgettable night",
     subtitle: "Reserve Event Set",
-    sceneTarget: "17_booking",
-  },
-  {
-    id: "more",
-    label: "MORE",
-    target: "more",
-    shortcut: "6",
-    description: "Explore artist profile, philosophy & journey",
-    subtitle: "Artist Profile & Info",
-    sceneTarget: "16_artist_profile",
+    sceneTarget: "15_booking",
   },
 ];
 
@@ -112,137 +110,123 @@ export const SCENES_DATA: SceneMeta[] = [
     navCategory: null,
   },
   {
-    id: "02_sound_permission",
+    id: "02_transition",
     number: "02",
-    title: "SOUND PERMISSION",
-    caption: "Enter The Night - Sound On",
-    navCategory: null,
-  },
-  {
-    id: "03_transition",
-    number: "03",
     title: "TRANSITION INTO THE WORLD",
     caption: "Let The Music Take You",
     navCategory: null,
   },
   {
-    id: "04_void_arrival",
-    number: "04",
+    id: "03_entrance",
+    number: "03",
     title: "THE VOID / ARRIVAL",
     caption: "You Are Here",
     navCategory: "stage",
   },
   {
-    id: "05_entrance",
-    number: "05",
+    id: "04_entrance_tunnel",
+    number: "04",
     title: "THE ENTRANCE",
     caption: "Music People Moments Forever",
     navCategory: "stage",
   },
   {
-    id: "06_main_stage",
-    number: "06",
+    id: "05_audience",
+    number: "05",
     title: "MAIN STAGE REVEAL",
     caption: "A Higher State Together",
     navCategory: "stage",
   },
   {
-    id: "07_stage_interactive",
-    number: "07",
+    id: "06_main_stage_reveal",
+    number: "06",
     title: "STAGE EXPERIENCE",
     caption: "Interactive Lighting & FX Sweep",
     navCategory: "stage",
   },
   {
-    id: "08_approach_booth",
-    number: "08",
-    title: "APPROACH TO DJ BOOTH",
-    caption: "Every Drop A Story",
-    navCategory: "stage",
-  },
-  {
-    id: "09_dj_booth",
-    number: "09",
+    id: "07_dj_booth",
+    number: "07",
     title: "INTERACTIVE DJ BOOTH",
     caption: "Touch / Explore / Mix / Feel",
     navCategory: "stage",
   },
   {
-    id: "10_praxx_radio",
-    number: "10",
+    id: "08_praxx_radio",
+    number: "08",
     title: "PRAXX RADIO",
     caption: "Live Sessions & High-Res Player",
     navCategory: "music",
   },
   {
-    id: "11_sound_universe",
-    number: "11",
+    id: "09_sound_universe",
+    number: "09",
     title: "SOUND UNIVERSE",
     caption: "Explore 3D Genre Cosmos",
     navCategory: "music",
   },
   {
-    id: "12_event_archive",
-    number: "12",
+    id: "10_event_archive",
+    number: "10",
     title: "EVENT ARCHIVE",
     caption: "Moments That Matter",
     navCategory: "events",
   },
   {
-    id: "13_event_detail",
-    number: "13",
+    id: "11_event_detail",
+    number: "11",
     title: "EVENT DETAIL",
     caption: "Elegance Party Plot, Rajkot",
     navCategory: "events",
   },
   {
-    id: "14_biography_entrance",
-    number: "14",
+    id: "12_biography_entrance",
+    number: "12",
     title: "BIOGRAPHY ENTRANCE",
     caption: "Behind The Sound",
     navCategory: "story",
   },
   {
-    id: "15_biography_chapter",
-    number: "15",
+    id: "13_biography_chapter",
+    number: "13",
     title: "BIOGRAPHY CHAPTER",
     caption: "01 The First Frequency",
     navCategory: "story",
   },
   {
-    id: "16_artist_profile",
-    number: "16",
+    id: "14_artist_profile",
+    number: "14",
     title: "ARTIST PROFILE",
     caption: "Parth Chavda — Quick View",
-    navCategory: "more",
+    navCategory: "profile",
   },
   {
-    id: "17_booking",
-    number: "17",
+    id: "15_booking",
+    number: "15",
     title: "BOOKING SCREEN",
     caption: "Let's Create Something Unforgettable",
     navCategory: "book",
   },
   {
-    id: "18_booking_success",
-    number: "18",
+    id: "16_booking_success",
+    number: "16",
     title: "BOOKING SUCCESS",
     caption: "Request Received — Signal Active",
     navCategory: "book",
   },
   {
-    id: "19_exit_experience",
-    number: "19",
+    id: "17_exit_experience",
+    number: "17",
     title: "EXIT EXPERIENCE",
     caption: "Until Next Night",
-    navCategory: "more",
+    navCategory: null,
   },
   {
-    id: "20_final_screen",
-    number: "20",
+    id: "18_final_screen",
+    number: "18",
     title: "FINAL SCREEN",
     caption: "Still Listening. Still Learning. Still Playing.",
-    navCategory: "more",
+    navCategory: null,
   },
 ];
 

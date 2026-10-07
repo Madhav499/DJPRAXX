@@ -1,55 +1,43 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
+
+import { type NavDestination, NAV_ITEMS } from "./types/navigation";
+
 import {
-  type NavDestination,
-  type StoryboardScene,
-  NAV_ITEMS,
-  getNavCategoryForScene,
-} from "./types/navigation";
+  type EventItem,
+  EVENTS_DATA,
+} from "./components/scenes/10_11_Event_Archive";
+
 import { StageLightNav } from "./components/stageNav/StageLightNav";
 import { AudioHUD } from "./components/audio/AudioHUD";
 import { SceneTimelineScrubber } from "./components/navigation/SceneTimelineScrubber";
 
-// All 20 Scenes from Storyboard
-import { LoadingScene } from "./components/scenes/01_LoadingScene";
-import { SoundPermissionScene } from "./components/scenes/02_SoundPermissionScene";
-import { TransitionScene } from "./components/scenes/03_TransitionScene";
-import { VoidScene } from "./components/scenes/04_VoidScene";
-import { EntranceScene } from "./components/scenes/05_EntranceScene";
-import { MainStageScene } from "./components/scenes/06_MainStageScene";
-import { InteractiveStageScene } from "./components/scenes/07_InteractiveStageScene";
-import { ApproachBoothScene } from "./components/scenes/08_ApproachBoothScene";
-import { InteractiveDJBooth } from "./components/scenes/09_InteractiveDJBooth";
-import { PraxxRadioScene } from "./components/scenes/10_PraxxRadioScene";
-import { SoundUniverseScene } from "./components/scenes/11_SoundUniverseScene";
-import {
-  EventArchiveScene,
-  type EventItem,
-  EVENTS_DATA,
-} from "./components/scenes/12_EventArchiveScene";
-import { EventDetailScene } from "./components/scenes/13_EventDetailScene";
-import { BiographyEntranceScene } from "./components/scenes/14_BiographyEntranceScene";
-import { BiographyChaptersScene } from "./components/scenes/15_BiographyChaptersScene";
-import { ArtistProfileScene } from "./components/scenes/16_ArtistProfileScene";
-import { BookingScene } from "./components/scenes/17_BookingScene";
-import { BookingSuccessScene } from "./components/scenes/18_BookingSuccessScene";
-import { ExitExperienceScene } from "./components/scenes/19_ExitExperienceScene";
-import { FinalScreenScene } from "./components/scenes/20_FinalScreenScene";
+// import { useResponsiveExperience } from "./components/mobile/hooks/useResponsiveExperience";
+// import { MobileExperience } from "./components/mobile/MobileExperience";
 
-import { useResponsiveExperience } from "./components/mobile/hooks/useResponsiveExperience";
-import { MobileExperience } from "./components/mobile/MobileExperience";
+import SceneLayer from "./components/layers/SceneLayer";
+import UILayer from "./components/layers/UILayer";
+import CanvasLayer from "./components/layers/CanvasLayer";
 
-export function App() {
-  const { isMobile, isReducedMotion: responsiveReducedMotion } =
-    useResponsiveExperience();
+import { SceneProvider, useScene } from "./context/SceneContext";
 
-  // Navigation & Scene States
-  const [activeNav, setActiveNav] = useState<NavDestination>("stage");
+function AppContent() {
+  // const { isMobile, isReducedMotion: responsiveReducedMotion } =
+  //   useResponsiveExperience();
+
+  /**
+   * Scene state now comes from Context.
+   */
+  const { activeScene, activeNav, setActiveScene, handleSelectScene } =
+    useScene();
+
+  // Navigation UI States
   const [hoveredNav, setHoveredNav] = useState<NavDestination | null>(null);
+
   const [focusedNav, setFocusedNav] = useState<NavDestination | null>(null);
-  const [activeScene, setActiveScene] = useState<StoryboardScene>("01_loading");
 
   // App Context States
   const [selectedEvent, setSelectedEvent] = useState<EventItem>(EVENTS_DATA[0]);
+
   const [bookingDetails, setBookingDetails] = useState<{
     name: string;
     eventType: string;
@@ -61,68 +49,93 @@ export function App() {
     date: "",
     venue: "",
   });
-  const [isReducedMotion, setIsReducedMotion] = useState(false);
 
-  // Check prefers-reduced-motion
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setIsReducedMotion(mediaQuery.matches);
-    const handler = (e: MediaQueryListEvent) => setIsReducedMotion(e.matches);
-    mediaQuery.addEventListener("change", handler);
-    return () => mediaQuery.removeEventListener("change", handler);
-  }, []);
+  // const [isReducedMotion, setIsReducedMotion] = useState(false);
 
-  // Handle Stage Light Navigation selection (Click on fixture or label)
-  const handleSelectNav = useCallback((dest: NavDestination) => {
-    setActiveNav(dest);
+  /**
+   * Detect OS reduced motion preference.
+   */
+  // useEffect(() => {
+  //   const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    // Map to primary scene for that destination
-    const targetItem = NAV_ITEMS.find((item) => item.id === dest);
-    if (targetItem) {
-      setActiveScene(targetItem.sceneTarget);
-    }
-  }, []);
+  //   setIsReducedMotion(mediaQuery.matches);
 
-  // Handle direct scene selection from timeline or scene CTA
-  const handleSelectScene = useCallback((scene: StoryboardScene) => {
-    setActiveScene(scene);
-    const category = getNavCategoryForScene(scene);
-    setActiveNav(category);
-  }, []);
+  //   const handler = (e: MediaQueryListEvent) => {
+  //     setIsReducedMotion(e.matches);
+  //   };
 
-  const handleTriggerStageFX = useCallback(() => {
-    // Trigger visual/lighting effect handler
-  }, []);
+  //   mediaQuery.addEventListener("change", handler);
 
-  // Mobile Presentation Layer (Activates only at mobile breakpoints, desktop/tablet untouched)
-  if (isMobile) {
-    return (
-      <MobileExperience
-        activeNav={activeNav}
-        activeScene={activeScene}
-        onSelectNav={handleSelectNav}
-        onSelectScene={handleSelectScene}
-        selectedEvent={selectedEvent}
-        onSelectEvent={setSelectedEvent}
-        bookingDetails={bookingDetails}
-        onBookingSuccess={(details) => {
-          setBookingDetails(details);
-          handleSelectScene("18_booking_success");
-        }}
-        isReducedMotion={isReducedMotion || responsiveReducedMotion}
-      />
-    );
-  }
+  //   return () => {
+  //     mediaQuery.removeEventListener("change", handler);
+  //   };
+  // }, []);
 
-  // Whether Stage Light Nav should be visible (Scenes 04 through 20)
-  const showStageLightNav = ![
-    "01_loading",
-    "02_sound_permission",
-    "03_transition",
-  ].includes(activeScene);
+  /**
+   * Stage Light Navigation
+   */
+  const handleSelectNav = useCallback(
+    (dest: NavDestination) => {
+      const targetItem = NAV_ITEMS.find((item) => item.id === dest);
+
+      if (!targetItem) return;
+
+      /**
+       * Context automatically:
+       *
+       * 1. changes activeScene
+       * 2. updates activeNav
+       * 3. updates URL
+       */
+      handleSelectScene(targetItem.sceneTarget);
+    },
+    [handleSelectScene],
+  );
+
+  /**
+   * Mobile layout
+   */
+  // if (isMobile) {
+  //   return (
+  //     <MobileExperience
+  //       activeNav={activeNav}
+  //       activeScene={activeScene}
+  //       onSelectNav={handleSelectNav}
+  //       onSelectScene={handleSelectScene}
+  //       selectedEvent={selectedEvent}
+  //       onSelectEvent={setSelectedEvent}
+  //       bookingDetails={bookingDetails}
+  //       onBookingSuccess={(details) => {
+  //         setBookingDetails(details);
+
+  //         handleSelectScene("18_booking_success");
+  //       }}
+  //       isReducedMotion={isReducedMotion || responsiveReducedMotion}
+  //     />
+  //   );
+  // }
+
+  /**
+   * Stage light navigation starts after
+   * intro scenes.
+   */
+  const showStageLightNav = !["01_loading", "02_transition"].includes(
+    activeScene,
+  );
 
   return (
-    <div className="relative min-h-screen w-full bg-[#050508] text-white overflow-hidden selection:bg-amber-500 selection:text-black">
+    <div
+      className="
+      relative
+      min-h-screen
+      w-full
+      bg-[#050508]
+      text-white
+      overflow-hidden
+      selection:bg-amber-500
+      selection:text-black
+    "
+    >
       {showStageLightNav && (
         <StageLightNav
           activeNav={activeNav}
@@ -134,137 +147,28 @@ export function App() {
         />
       )}
 
-      {/* Main Experience Scene Router (Rendering 20-Scene Journey) */}
-      <main className="relative z-20 w-full min-h-screen flex flex-col justify-center">
-        {activeScene === "01_loading" && (
-          <LoadingScene
-            onComplete={() => setActiveScene("02_sound_permission")}
-          />
-        )}
+      {/* Main 20-scene experience */}
+      <SceneLayer
+        activeScene={activeScene}
+        setActiveScene={setActiveScene}
+        handleSelectScene={handleSelectScene}
+        selectedEvent={selectedEvent}
+        setSelectedEvent={setSelectedEvent}
+        bookingDetails={bookingDetails}
+        setBookingDetails={setBookingDetails}
+      />
 
-        {activeScene === "02_sound_permission" && (
-          <SoundPermissionScene
-            onEnter={(_soundEnabled) => {
-              setActiveScene("03_transition");
-            }}
-          />
-        )}
+      <CanvasLayer activeScene={activeScene} />
 
-        {activeScene === "03_transition" && (
-          <TransitionScene
-            onComplete={() => handleSelectScene("04_void_arrival")}
-          />
-        )}
+      <UILayer
+        bookingDetails={bookingDetails}
+        setBookingDetails={setBookingDetails}
+      />
 
-        {activeScene === "04_void_arrival" && (
-          <VoidScene onNext={() => handleSelectScene("05_entrance")} />
-        )}
-
-        {activeScene === "05_entrance" && (
-          <EntranceScene onNext={() => handleSelectScene("06_main_stage")} />
-        )}
-
-        {activeScene === "06_main_stage" && (
-          <MainStageScene
-            onNext={() => handleSelectScene("07_stage_interactive")}
-          />
-        )}
-
-        {activeScene === "07_stage_interactive" && (
-          <InteractiveStageScene
-            onNext={() => handleSelectScene("08_approach_booth")}
-            onTriggerFX={handleTriggerStageFX}
-          />
-        )}
-
-        {activeScene === "08_approach_booth" && (
-          <ApproachBoothScene onNext={() => handleSelectScene("09_dj_booth")} />
-        )}
-
-        {activeScene === "09_dj_booth" && (
-          <InteractiveDJBooth
-            onNext={() => handleSelectScene("10_praxx_radio")}
-          />
-        )}
-
-        {activeScene === "10_praxx_radio" && (
-          <PraxxRadioScene
-            onNext={() => handleSelectScene("11_sound_universe")}
-          />
-        )}
-
-        {activeScene === "11_sound_universe" && (
-          <SoundUniverseScene
-            onNext={() => handleSelectScene("12_event_archive")}
-          />
-        )}
-
-        {activeScene === "12_event_archive" && (
-          <EventArchiveScene
-            onSelectEvent={(ev) => {
-              setSelectedEvent(ev);
-              handleSelectScene("13_event_detail");
-            }}
-            onNext={() => handleSelectScene("13_event_detail")}
-          />
-        )}
-
-        {activeScene === "13_event_detail" && (
-          <EventDetailScene
-            event={selectedEvent}
-            onNext={() => handleSelectScene("14_biography_entrance")}
-          />
-        )}
-
-        {activeScene === "14_biography_entrance" && (
-          <BiographyEntranceScene
-            onNext={() => handleSelectScene("15_biography_chapter")}
-          />
-        )}
-
-        {activeScene === "15_biography_chapter" && (
-          <BiographyChaptersScene
-            onNext={() => handleSelectScene("16_artist_profile")}
-          />
-        )}
-
-        {activeScene === "16_artist_profile" && (
-          <ArtistProfileScene onNext={() => handleSelectScene("17_booking")} />
-        )}
-
-        {activeScene === "17_booking" && (
-          <BookingScene
-            onSuccess={(data) => {
-              setBookingDetails(data);
-              handleSelectScene("18_booking_success");
-            }}
-          />
-        )}
-
-        {activeScene === "18_booking_success" && (
-          <BookingSuccessScene
-            bookingData={bookingDetails}
-            onNext={() => handleSelectScene("19_exit_experience")}
-          />
-        )}
-
-        {activeScene === "19_exit_experience" && (
-          <ExitExperienceScene
-            onNext={() => handleSelectScene("20_final_screen")}
-          />
-        )}
-
-        {activeScene === "20_final_screen" && (
-          <FinalScreenScene
-            onReplay={() => handleSelectScene("04_void_arrival")}
-          />
-        )}
-      </main>
-
-      {/* Floating DJ Audio HUD with Realtime Visualizer */}
+      {/* DJ Audio HUD */}
       {showStageLightNav && <AudioHUD />}
 
-      {/* 20-Scene Timeline Quick-Scrubber Dock */}
+      {/* Scene Timeline */}
       {showStageLightNav && (
         <SceneTimelineScrubber
           currentScene={activeScene}
@@ -275,104 +179,15 @@ export function App() {
   );
 }
 
+/**
+ * Context provider wraps the application.
+ */
+export function App() {
+  return (
+    <SceneProvider>
+      <AppContent />
+    </SceneProvider>
+  );
+}
+
 export default App;
-
-// import { useState } from "react";
-// import { AnimatePresence, motion } from "framer-motion";
-
-// const scenes = [
-//   "/images/outside.jpg",
-//   "/images/entrance.jpg",
-//   "/images/stage.jpg",
-//   "/images/final.jpg"
-// ];
-
-// export default function EventExperience() {
-
-//   const [step,setStep] = useState(0);
-
-//   const nextScene = () => {
-//     if(step < scenes.length - 1){
-//       setStep(step + 1);
-//     }
-//   };
-
-//   return (
-
-//     <div className="
-//       relative
-//       h-screen
-//       overflow-hidden
-//       bg-black
-//     ">
-
-//       <AnimatePresence mode="sync">
-
-//         <motion.img
-
-//           key={scenes[step]}
-
-//           src={scenes[step]}
-
-//           className="
-//             absolute
-//             inset-0
-//             h-full
-//             w-full
-//             object-cover
-//           "
-
-//           initial={{
-//             scale:1.25,
-//             opacity:0,
-//             filter:"blur(15px)"
-//           }}
-
-//           animate={{
-//             scale:1,
-//             opacity:1,
-//             filter:"blur(0px)"
-//           }}
-
-//           exit={{
-//             scale:1.8,
-//             opacity:0,
-//             filter:"blur(25px)"
-//           }}
-
-//           transition={{
-//             duration:1.5,
-//             ease:[0.76,0,0.24,1]
-//           }}
-
-//         />
-
-//       </AnimatePresence>
-
-//       <button
-
-//         onClick={nextScene}
-
-//         className="
-//           absolute
-//           bottom-10
-//           left-1/2
-//           -translate-x-1/2
-//           bg-white
-//           text-black
-//           px-8
-//           py-4
-//           rounded-full
-//           font-semibold
-//         "
-
-//       >
-
-//         Enter Event →
-
-//       </button>
-
-//     </div>
-
-//   )
-// }
