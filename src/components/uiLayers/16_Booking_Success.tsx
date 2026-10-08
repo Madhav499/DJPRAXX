@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { motion } from "framer-motion";
 import {
   ArrowRight,
   CalendarDays,
@@ -41,7 +42,11 @@ export const BookingSuccessScene: React.FC<BookingSuccessSceneProps> = ({
   }, [bookingData]);
 
   return (
-    <section
+    <motion.section
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
       className="
         relative
         min-h-[100dvh]
@@ -934,51 +939,6 @@ export const BookingSuccessScene: React.FC<BookingSuccessSceneProps> = ({
         )}
 
         {/* ================================================================ */}
-        {/* SIGNAL REFERENCE                                                 */}
-        {/* ================================================================ */}
-
-        <div
-          className="
-            mt-5
-            inline-flex
-            items-center
-            gap-3
-            rounded-full
-            border
-            border-white/[0.07]
-            bg-black/20
-            px-4
-            py-2
-          "
-        >
-          <span
-            className="
-              font-tech
-              text-[7px]
-              uppercase
-              tracking-[0.22em]
-              text-text-subtle
-            "
-          >
-            Signal Ref
-          </span>
-
-          <span className="h-3 w-px bg-white/10" />
-
-          <span
-            className="
-              font-tech
-              text-[8px]
-              font-semibold
-              tracking-[0.18em]
-              text-primary
-            "
-          >
-            {confirmationCode}
-          </span>
-        </div>
-
-        {/* ================================================================ */}
         {/* NEXT BUTTON                                                      */}
         {/* ================================================================ */}
 
@@ -1148,6 +1108,6 @@ export const BookingSuccessScene: React.FC<BookingSuccessSceneProps> = ({
           }
         }
       `}</style>
-    </section>
+    </motion.section>
   );
 };

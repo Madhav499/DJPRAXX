@@ -86,27 +86,6 @@ function AppContent() {
     preloadImages(experienceImages);
   }, []);
 
-  // const [isReducedMotion, setIsReducedMotion] = useState(false);
-
-  /**
-   * Detect OS reduced motion preference.
-   */
-  // useEffect(() => {
-  //   const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-  //   setIsReducedMotion(mediaQuery.matches);
-
-  //   const handler = (e: MediaQueryListEvent) => {
-  //     setIsReducedMotion(e.matches);
-  //   };
-
-  //   mediaQuery.addEventListener("change", handler);
-
-  //   return () => {
-  //     mediaQuery.removeEventListener("change", handler);
-  //   };
-  // }, []);
-
   /**
    * Stage Light Navigation
    */
@@ -127,29 +106,6 @@ function AppContent() {
     },
     [handleSelectScene],
   );
-
-  /**
-   * Mobile layout
-   */
-  // if (isMobile) {
-  //   return (
-  //     <MobileExperience
-  //       activeNav={activeNav}
-  //       activeScene={activeScene}
-  //       onSelectNav={handleSelectNav}
-  //       onSelectScene={handleSelectScene}
-  //       selectedEvent={selectedEvent}
-  //       onSelectEvent={setSelectedEvent}
-  //       bookingDetails={bookingDetails}
-  //       onBookingSuccess={(details) => {
-  //         setBookingDetails(details);
-
-  //         handleSelectScene("18_booking_success");
-  //       }}
-  //       isReducedMotion={isReducedMotion || responsiveReducedMotion}
-  //     />
-  //   );
-  // }
 
   /**
    * Stage light navigation starts after

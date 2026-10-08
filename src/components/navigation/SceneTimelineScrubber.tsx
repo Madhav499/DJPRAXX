@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { type StoryboardScene, SCENES_DATA } from "../../types/navigation";
 import { ChevronLeft, ChevronRight, Layers, Play, Pause } from "lucide-react";
 import { HowlerEngine } from "../../audio/howlerEngine";
@@ -18,22 +18,62 @@ export const SceneTimelineScrubber: React.FC<SceneTimelineScrubberProps> = ({
   const currentIndex = SCENES_DATA.findIndex((s) => s.id === currentScene);
   const currentSceneMeta = SCENES_DATA[currentIndex] || SCENES_DATA[0];
 
-  const handlePrev = () => {
-    if (currentIndex > 0) {
+  const nonScrubberScenes = SCENES_DATA.filter(
+    (s) => s.id !== "01_loading" && s.id !== "02_transition",
+  );
+
+  const handlePrev = useCallback(() => {
+    if (
+      currentIndex > 0 &&
+      nonScrubberScenes.includes(SCENES_DATA[currentIndex - 1])
+    ) {
       HowlerEngine.triggerLightPulseSound();
       onSelectScene(SCENES_DATA[currentIndex - 1].id);
     }
-  };
+  }, [currentIndex, onSelectScene]);
 
-  const handleNext = () => {
-    if (currentIndex < SCENES_DATA.length - 1) {
+  const handleNext = useCallback(() => {
+    if (
+      currentIndex >= 0 &&
+      currentIndex < SCENES_DATA.length - 1 &&
+      nonScrubberScenes.includes(SCENES_DATA[currentIndex + 1])
+    ) {
       HowlerEngine.triggerLightPulseSound();
       onSelectScene(SCENES_DATA[currentIndex + 1].id);
     }
-  };
+  }, [currentIndex, onSelectScene]);
+
+  // Keyboard arrows use the same handlers as the timeline buttons.
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Leave keyboard navigation alone while typing or editing text.
+      const target = event.target;
+      if (
+        event.altKey ||
+        event.ctrlKey ||
+        event.metaKey ||
+        (target instanceof HTMLElement &&
+          (target.isContentEditable ||
+            target.closest('input, textarea, select, [role="textbox"]')))
+      ) {
+        return;
+      }
+
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        handlePrev();
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        handleNext();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handlePrev, handleNext]);
 
   // Auto-tour timer
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isAutoTour) return;
     const timer = setInterval(() => {
       const nextIdx = (currentIndex + 1) % SCENES_DATA.length;

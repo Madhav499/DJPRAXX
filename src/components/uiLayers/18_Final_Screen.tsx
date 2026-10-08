@@ -618,36 +618,6 @@ export const FinalScreenScene: React.FC<FinalScreenSceneProps> = ({
               xl:text-left
             "
           >
-            {/* eyebrow */}
-            <div
-              className="
-                inline-flex items-center gap-3
-                rounded-full border
-                border-white/[0.08]
-                bg-white/[0.025]
-                px-4 py-2
-                backdrop-blur-md
-              "
-            >
-              <span
-                className="
-                  h-1.5 w-1.5 rounded-full
-                  bg-primary
-                  shadow-[0_0_10px_rgba(240,124,34,.95)]
-                "
-              />
-
-              <span
-                className="
-                  font-tech text-[8px]
-                  font-semibold tracking-[0.28em]
-                  text-white/45 uppercase
-                "
-              >
-                Scene 20 · End of transmission
-              </span>
-            </div>
-
             {/* title */}
             <h1
               className="
