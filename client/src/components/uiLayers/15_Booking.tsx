@@ -56,6 +56,8 @@ interface FieldShellProps {
   children: React.ReactNode;
 }
 
+const BOOKING_API_ENDPOINT = import.meta.env.VITE_BOOKING_API_URL;
+
 const FieldShell: React.FC<FieldShellProps> = ({
   label,
   icon,
@@ -142,8 +144,8 @@ export const BookingScene: React.FC<BookingSceneProps> = ({ onSuccess }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!formData.name.trim() || !formData.phone.trim()) {
-      setErrorMsg("Please provide your name and phone number.");
+    if (!formData.name.trim() || !formData.phone.trim() || !formData.date) {
+      setErrorMsg("Please provide your name, phone number and event date.");
       return;
     }
 
@@ -154,41 +156,41 @@ export const BookingScene: React.FC<BookingSceneProps> = ({ onSuccess }) => {
     HowlerEngine.triggerLightPulseSound();
 
     try {
-      /* ------------------------------------------------------------------ */
-      /* REAL API                                                           */
-      /* ------------------------------------------------------------------ */
-
-      /*
-      const response = await fetch(BOOKING_API_ENDPOINT, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Unable to submit booking request.");
+      if (!BOOKING_API_ENDPOINT) {
+        throw new Error("Booking API is not configured");
       }
 
-      const result = await response.json();
-      console.log("Booking API response:", result);
-      */
+      const body = new URLSearchParams({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        eventType: formData.eventType,
+        date: formData.date,
+        venue: formData.venue,
+        message: formData.message,
+      });
 
-      /* Remove when actual API is connected */
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      await fetch(BOOKING_API_ENDPOINT, {
+        method: "POST",
+        mode: "no-cors",
+        body,
+      });
+
+      // A no-cors response is opaque.
+      // This does NOT confirm that the Sheet saved the request.
+      // Keep the booking in a submission-unverified state
+      // until it is checked in Google Sheets.
 
       setSubmitted(true);
 
       onSuccess({
         name: formData.name,
         eventType: formData.eventType,
-        date: formData.date || "Upcoming Date",
-        venue: formData.venue || "Rajkot / Gujarat Venue",
+        date: formData.date,
+        venue: formData.venue || "Venue not specified",
       });
     } catch (error) {
-      console.error(error);
-
+      console.error("Booking submission error:", error);
       setErrorMsg("We couldn't send your booking request. Please try again.");
     } finally {
       setIsSubmitting(false);
@@ -653,7 +655,8 @@ export const BookingScene: React.FC<BookingSceneProps> = ({ onSuccess }) => {
                     text-emerald-200
                   "
                 >
-                  Your booking request has been received.
+                  Your booking request has been sent. Our team will contact you
+                  after reviewing it.
                 </span>
               </div>
             )}
@@ -827,6 +830,7 @@ export const BookingScene: React.FC<BookingSceneProps> = ({ onSuccess }) => {
                     value={formData.date}
                     onChange={(e) => updateField("date", e.target.value)}
                     className={`${inputClass} [color-scheme:dark]`}
+                    min={new Date().toISOString().split("T")[0]}
                   />
                 </FieldShell>
 
